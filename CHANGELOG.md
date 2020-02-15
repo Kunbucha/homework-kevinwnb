@@ -78,3 +78,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Case time support
 - Lowering the human score threshold for conversions
 
+## [1.1.0] - 2019-12-02
+### Added 
+- Pops support
+- Direct banners support
+### Removed
+- Conversion limit
+
+## [1.0.0] - 2019-10-25
+### Added
+- Conversions support
+### Changed
+- Rewriting from Python to PHP
+
+
+[Unreleased]: https://github.com/adshares/adpay/compare/v1.2.0...HEAD
+[1.5.0]: https://github.com/adshares/adpay/compare/v1.4.2...v1.5.0
+[1.4.2]: https://github.com/adshares/adpay/compare/v1.4.1...v1.4.2
+[1.4.1]: https://github.com/adshares/adpay/compare/v1.4.0...v1.4.1
+[1.4.0]: https://github.com/adshares/adpay/compare/v1.3.3...v1.4.0
+[1.3.3]: https://github.com/adshares/adpay/compare/v1.3.2...v1.3.3
+[1.3.2]: https://github.com/adshares/adpay/compare/v1.3.1...v1.3.2
+[1.3.1]: https://github.com/adshares/adpay/compare/v1.3.0...v1.3.1
+[1.3.0]: https://github.com/adshares/adpay/compare/v1.2.2...v1.3.0
+[1.2.2]: https://github.com/adshares/adpay/compare/v1.2.1...v1.2.2
+[1.2.1]: https://github.com/adshares/adpay/compare/v1.2.0...v1.2.1
+[1.2.0]: https://github.com/adsh
