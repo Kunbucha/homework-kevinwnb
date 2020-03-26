@@ -551,4 +551,31 @@
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
-                    "Doctrine\\Bundle\\DoctrineBundle\\
+                    "Doctrine\\Bundle\\DoctrineBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                },
+                {
+                    "name": "Doctrine Project",
+                    "homepage": "https://www.doctrine-project.org/"
+                }
+            ],
+            "description": "Symfony DoctrineBundle",
+            "homepage": "https://www.doctrine-project.org",
+            "keywords": [
