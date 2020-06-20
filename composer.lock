@@ -2441,4 +2441,28 @@
                 },
                 {
                     "url": "https://github.com/fabpot",
-                    "type":
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-11-25T18:56:07+00:00"
+        },
+        {
+            "name": "symfony/dotenv",
+            "version": "v5.4.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/dotenv.git",
+                "reference": "83a2310904a4f5d4f42526227b5a578ac82232a9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/dotenv/zipball/83a2310904a4f5d4f42526227b5a578ac82232a9",
+                "reference": "83a2310904a4f5d4f42526227b5a578ac82232a9",
+                "shasum": ""
+            },
+            "require": {
+                "php": 
