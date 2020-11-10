@@ -5415,4 +5415,26 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://gi
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.15.0"
+            },
+            "time": "2022-12-07T16:12:39+00:00"
+        },
+        {
+            "name": "phpunit/php-code-coverage",
+            "version": "9.2.20",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
+                "reference": "af7463c955007de36db0c5e26d03e2f933c2e980"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/af7463c955007de36db0c5e26d03e2f933c2e980",
+                "reference": "af7463c955007de36db0c5e26d03e2f933c2e980",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-libxml": "*",
+                "ext-xmlwriter": "*",
+                "nikic/php-parser": "
