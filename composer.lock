@@ -5826,3 +5826,28 @@
             "funding": [
                 {
                     "url": "https://phpunit.de/sponsors.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/phpunit/phpunit",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-12-09T07:31:23+00:00"
+        },
+        {
+            "name": "qossmic/deptrac-shim",
+            "version": "0.23.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/qossmic/deptrac-shim.git",
+                "reference": "419c6ccd31495d6410b0c6d9a87366b69223a0da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/qossmic/deptrac-shim/zipball/419c6ccd31495d6410b0c6d9a87366b69223a0da",
+                "referenc
