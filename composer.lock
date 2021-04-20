@@ -6734,4 +6734,27 @@
                 }
             ],
             "description": "Provides a list of PHP built-in functions that operate on resources",
-            "homepage": "https://www.github.com/s
+            "homepage": "https://www.github.com/sebastianbergmann/resource-operations",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/resource-operations/issues",
+                "source": "https://github.com/sebastianbergmann/resource-operations/tree/3.0.3"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-09-28T06:45:17+00:00"
+        },
+        {
+            "name": "sebastian/type",
+            "version": "3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/type.git",
+                "reference": "fb3fe09c5f0bae6bc27ef3ce933a1e0ed9464b6e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/re
