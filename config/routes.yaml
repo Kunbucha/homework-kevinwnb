@@ -37,4 +37,41 @@ api_delete_campaigns:
 api_post_views:
     path: /api/v{version}/events/views
     controller: App\UI\Controller\EventController::updateViews
-    methods:
+    methods: POST
+    requirements:
+        version: '1'
+    defaults:
+        _format: json
+
+api_post_clicks:
+    path: /api/v{version}/events/clicks
+    controller: App\UI\Controller\EventController::updateClicks
+    methods: POST
+    requirements:
+        version: '1'
+    defaults:
+        _format: json
+
+api_post_conversions:
+    path: /api/v{version}/events/conversions
+    controller: App\UI\Controller\EventController::updateConversions
+    methods: POST
+    requirements:
+        version: '1'
+    defaults:
+        _format: json
+
+api_get_payments:
+    path: /api/v{version}/reports/{timestamp}/payments
+    controller: App\UI\Controller\PaymentController::find
+    methods: GET
+    requirements:
+        version: '1'
+        timestamp: '\d+'
+    defaults:
+        _format: json
+
+api_get_reports:
+    path: /api/v{version}/reports
+    controller: App\UI\Controller\ReportController::find
+    methods: GE
