@@ -1,3 +1,40 @@
 api_post_bid_strategies:
     path: /api/v{version}/bid-strategies
-    controller: App\UI\Controller\BidStrategyController::
+    controller: App\UI\Controller\BidStrategyController::updateBidStrategies
+    methods: POST
+    requirements:
+        version: '1'
+    defaults:
+        _format: json
+
+api_delete_bid_strategies:
+    path: /api/v{version}/bid-strategies
+    controller: App\UI\Controller\BidStrategyController::deleteBidStrategies
+    methods: DELETE
+    requirements:
+        version: '1'
+    defaults:
+        _format: json
+
+api_post_campaigns:
+    path: /api/v{version}/campaigns
+    controller: App\UI\Controller\CampaignController::updateCampaigns
+    methods: POST
+    requirements:
+        version: '1'
+    defaults:
+        _format: json
+
+api_delete_campaigns:
+    path: /api/v{version}/campaigns
+    controller: App\UI\Controller\CampaignController::deleteCampaigns
+    methods: DELETE
+    requirements:
+        version: '1'
+    defaults:
+        _format: json
+
+api_post_views:
+    path: /api/v{version}/events/views
+    controller: App\UI\Controller\EventController::updateViews
+    methods:
