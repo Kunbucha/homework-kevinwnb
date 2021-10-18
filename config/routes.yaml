@@ -1,0 +1,3 @@
+api_post_bid_strategies:
+    path: /api/v{version}/bid-strategies
+    controller: App\UI\Controller\BidStrategyController::
