@@ -26,4 +26,14 @@ Some things that will increase the chance that your pull request is accepted:
 - Write tests.
 - Follow [PSR2 coding style guide][style].
 - Write a [good commit message][commit].
-- Ensure the PR description clearly describe
+- Ensure the PR description clearly describes the problem and solution. 
+- Include the relevant issue number if applicable.
+
+[bug list]: https://github.com/adshares/adpay/labels/Bug
+[bug report template]: https://github.com/adshares/adpay/issues/new?template=bug_report.md&labels=Bug
+[issues]: https://github.com/adshares/adpay/issues
+[telegram]: https://t.me/adshares
+[tech_email]: mailto:tech@adshares.net
+[pr]: https://github.com/adshares/adpay/compare/
+[style]: https://www.php-fig.org/psr/psr-2/
+[commit]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
