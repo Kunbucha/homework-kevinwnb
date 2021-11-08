@@ -31,4 +31,8 @@ final class EventDeleteCommand
         $clicks = $this->eventRepository->deleteByTime(EventType::createClick(), null, $dateTo);
         $this->logger->info(sprintf('%d clicks deleted', $clicks));
         $conversions = $this->eventRepository->deleteByTime(EventType::createConversion(), null, $dateTo);
-        $this->logger->info(sprintf('%d conversions delete
+        $this->logger->info(sprintf('%d conversions deleted', $conversions));
+
+        return $views + $clicks + $conversions;
+    }
+}
