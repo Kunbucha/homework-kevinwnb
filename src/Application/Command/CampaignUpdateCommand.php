@@ -1,14 +1,15 @@
+
 <?php
 
 declare(strict_types=1);
 
 namespace App\Application\Command;
 
-use App\Application\DTO\CampaignDeleteDTO;
+use App\Application\DTO\CampaignUpdateDTO;
 use App\Domain\Repository\CampaignRepository;
 use Psr\Log\LoggerInterface;
 
-final class CampaignDeleteCommand
+final class CampaignUpdateCommand
 {
     private CampaignRepository $campaignRepository;
 
@@ -22,11 +23,11 @@ final class CampaignDeleteCommand
         $this->logger = $logger;
     }
 
-    public function execute(CampaignDeleteDTO $dto): int
+    public function execute(CampaignUpdateDTO $dto): int
     {
-        $this->logger->debug('Running delete campaigns command');
-        $result = $this->campaignRepository->deleteAll($dto->getIds());
-        $this->logger->info(sprintf('%d campaigns deleted', $result));
+        $this->logger->debug('Running update campaigns command');
+        $result = $this->campaignRepository->saveAll($dto->getCampaigns());
+        $this->logger->info(sprintf('%d campaigns updated', $result));
 
         return $result;
     }
