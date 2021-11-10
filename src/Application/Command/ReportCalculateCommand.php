@@ -34,4 +34,27 @@ final class ReportCalculateCommand
         $report = $this->paymentReportRepository->fetchOrCreate($reportId);
 
         if (!$report->isComplete() && !$force) {
-            throw new ReportN
+            throw new ReportNotCompleteException($reportId);
+        }
+
+        $this->logger->info(
+            sprintf(
+                'Calculating report #%d from %s to %s',
+                $reportId,
+                $report->getTimeStart()->format(DateTimeInterface::ATOM),
+                $report->getTimeEnd()->format(DateTimeInterface::ATOM)
+            )
+        );
+
+        $this->paymentRepository->deleteByReportId($report->getId());
+
+        $events = $this->eventRepository->fetchByTime($report->getTimeStart(), $report->getTimeEnd());
+
+        $calculator = $this->paymentCalculatorFactory->createPaymentCalculator();
+        $count = 0;
+        $payments = [];
+        foreach ($calculator->calculate($reportId, $events) as $payment) {
+            $payments[] = $payment;
+            ++$count;
+            if ($count % self::BATCH_SIZE === 0) {
+                $this->paymentRepository->saveAllRaw($report->getId()
