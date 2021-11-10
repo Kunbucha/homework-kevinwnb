@@ -24,4 +24,24 @@ final class PaymentFetchCommand
 
     public function execute(int $timestamp, ?int $limit = null, ?int $offset = null): PaymentFetchDTO
     {
-        $this->logger->debug('Runn
+        $this->logger->debug('Running fetch payments command');
+
+        $report = $this->paymentReportRepository->fetch(PaymentReport::timestampToId($timestamp));
+
+        if (null === $report) {
+            throw new ReportNotFoundException($timestamp);
+        }
+
+        if (!$report->isComplete()) {
+            throw new ReportNotCompleteException($timestamp);
+        }
+
+        if (!$report->isCalculated()) {
+            return new PaymentFetchDTO(false, []);
+        }
+
+        $payments = $this->paymentRepository->fetchByReportId($report->getId(), $limit, $offset);
+
+        return new PaymentFetchDTO(true, $payments);
+    }
+}
