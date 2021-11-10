@@ -57,4 +57,17 @@ final class ReportCalculateCommand
             $payments[] = $payment;
             ++$count;
             if ($count % self::BATCH_SIZE === 0) {
-                $this->paymentRepository->saveAllRaw($report->getId()
+                $this->paymentRepository->saveAllRaw($report->getId(), $payments);
+                $payments = [];
+            }
+        }
+        $this->paymentRepository->saveAllRaw($report->getId(), $payments);
+
+        $report->markAsCalculated();
+        $this->paymentReportRepository->save($report);
+
+        $this->logger->info(sprintf('%d payments calculated', $count));
+
+        return $count;
+    }
+}
