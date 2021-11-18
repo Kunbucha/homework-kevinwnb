@@ -20,4 +20,7 @@ final class ReportFetchCompletedCommand
     public function execute(): PaymentReportFetchDTO
     {
         $this->logger->debug('Running fetch completed report command');
-        $reports = $this->paymentReportRepository->fetchByStatus(Payme
+        $reports = $this->paymentReportRepository->fetchByStatus(PaymentReportStatus::createComplete());
+        return new PaymentReportFetchDTO($reports);
+    }
+}
