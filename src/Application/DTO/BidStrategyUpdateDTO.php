@@ -78,4 +78,19 @@ final class BidStrategyUpdateDTO
     protected function fill(array $input): void
     {
         $collection = new BidStrategyCollection();
-        foreach ($input['bid_strategies'
+        foreach ($input['bid_strategies'] as $bidStrategy) {
+            try {
+                $id = new Id($bidStrategy['id']);
+                foreach ($bidStrategy['details'] as $bidStrategyDetail) {
+                    $model = new BidStrategy($id, $bidStrategyDetail['category'], (float)$bidStrategyDetail['rank']);
+
+                    $collection->add($model);
+                }
+            } catch (InvalidArgumentException | TypeError $exception) {
+                throw new ValidationException($exception->getMessage());
+            }
+        }
+
+        $this->bidStrategies = $collection;
+    }
+}
