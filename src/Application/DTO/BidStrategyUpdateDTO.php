@@ -52,4 +52,30 @@ final class BidStrategyUpdateDTO
         }
 
         if (!is_array($input['details'])) {
-         
+            throw new ValidationException('Field `details` must be an array.');
+        }
+
+        $this->validateDetails($input['details']);
+    }
+
+    private function validateDetails(array $details): void
+    {
+        foreach ($details as $input) {
+            if (empty($input['category'])) {
+                throw new ValidationException('Field `details[][category]` is required.');
+            }
+
+            if (!isset($input['rank'])) {
+                throw new ValidationException('Field `details[][rank]` is required.');
+            }
+
+            if (!is_numeric($input['rank'])) {
+                throw new ValidationException('Field `details[][rank]` must be a number.');
+            }
+        }
+    }
+
+    protected function fill(array $input): void
+    {
+        $collection = new BidStrategyCollection();
+        foreach ($input['bid_strategies'
