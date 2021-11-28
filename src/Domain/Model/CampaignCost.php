@@ -56,4 +56,52 @@ final class CampaignCost
         return $this->campaignId;
     }
 
-   
+    public function getScore(): ?float
+    {
+        return $this->score;
+    }
+
+    public function setScore(?float $score): void
+    {
+        $this->score = $score;
+    }
+
+    public function getMaxCpm(): int
+    {
+        return $this->maxCpm;
+    }
+
+    public function setMaxCpm(int $maxCpm): void
+    {
+        $this->maxCpm = $maxCpm;
+    }
+
+    public function getCpmFactor(): float
+    {
+        return $this->cpmFactor;
+    }
+
+    public function setCpmFactor(float $cpmFactor): void
+    {
+        $this->cpmFactor = $cpmFactor;
+    }
+
+    public function getViews(): int
+    {
+        return $this->views;
+    }
+
+    public function setViews(int $views): void
+    {
+        $this->views = $views;
+    }
+
+    public function getViewsCost(): int
+    {
+        return $this->viewsCost;
+    }
+
+    public function setViewsCost(int $viewsCost): void
+    {
+        $this->viewsCost = $viewsCost;
+    }
