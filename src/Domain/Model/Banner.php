@@ -33,4 +33,34 @@ final class Banner
         DateTimeInterface $deletedAt = null
     ) {
         $this->id = $id;
-    
+        $this->campaignId = $campaignId;
+        $this->size = $size;
+        $this->type = $type;
+        $this->deletedAt = $deletedAt;
+    }
+
+    public function getId(): Id
+    {
+        return $this->id;
+    }
+
+    public function getCampaignId(): Id
+    {
+        return $this->campaignId;
+    }
+
+    public function getSize(): string
+    {
+        return $this->size;
+    }
+
+    public function getType(): BannerType
+    {
+        return $this->type;
+    }
+
+    public function getDeletedAt(): ?DateTimeInterface
+    {
+        return $this->deletedAt;
+    }
+}
