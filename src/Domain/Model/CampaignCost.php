@@ -105,3 +105,44 @@ final class CampaignCost
     {
         $this->viewsCost = $viewsCost;
     }
+
+    public function getClicks(): int
+    {
+        return $this->clicks;
+    }
+
+    public function setClicks(int $clicks): void
+    {
+        $this->clicks = $clicks;
+    }
+
+    public function getClicksCost(): int
+    {
+        return $this->clicksCost;
+    }
+
+    public function setClicksCost(int $clicksCost): void
+    {
+        $this->clicksCost = $clicksCost;
+    }
+
+    public function getConversions(): int
+    {
+        return $this->conversions;
+    }
+
+    public function setConversions(int $conversions): void
+    {
+        $this->conversions = $conversions;
+    }
+
+    public function getConversionsCost(): int
+    {
+        return $this->conversionsCost;
+    }
+
+    public function setConversionsCost(int $conversionsCost): void
+    {
+        $this->conversionsCost = $conversionsCost;
+    }
+}
