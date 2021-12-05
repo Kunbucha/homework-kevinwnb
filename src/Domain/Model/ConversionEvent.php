@@ -50,4 +50,26 @@ final class ConversionEvent extends Event
         $this->groupId = $groupId;
         $this->conversionId = $conversionId;
         $this->conversionValue = $value;
-    
+        $this->paymentStatus = $paymentStatus;
+    }
+
+    public function getGroupId(): Id
+    {
+        return $this->groupId;
+    }
+
+    public function getConversionId(): Id
+    {
+        return $this->conversionId;
+    }
+
+    public function getConversionValue(): int
+    {
+        return $this->conversionValue;
+    }
+
+    public function getPaymentStatus(): PaymentStatus
+    {
+        return $this->paymentStatus;
+    }
+}
