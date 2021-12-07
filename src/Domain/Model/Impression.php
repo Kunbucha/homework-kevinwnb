@@ -65,4 +65,11 @@ final class Impression
 
     public function getHumanScore(): float
     {
-        return
+        return $this->context->getHumanScore();
+    }
+
+    public function getPageRank(): float
+    {
+        return $this->context->getPageRank();
+    }
+}
