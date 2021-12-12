@@ -76,4 +76,13 @@ final class Payment
         return $this->status->getStatus();
     }
 
-    public function isAccepte
+    public function isAccepted(): bool
+    {
+        return $this->status->isAccepted();
+    }
+
+    public function getValue()
+    {
+        return $this->value;
+    }
+}
