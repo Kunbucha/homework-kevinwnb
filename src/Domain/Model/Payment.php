@@ -32,4 +32,48 @@ final class Payment
         PaymentStatus $status,
         ?int $value = null,
         ?int $reportId = null
- 
+    ) {
+        $this->eventType = $eventType;
+        $this->eventId = $eventId;
+        $this->status = $status;
+        $this->value = $value;
+        if ($reportId !== null) {
+            $this->reportId = $reportId;
+        }
+    }
+
+    public function getReportId(): int
+    {
+        if ($this->reportId === null) {
+            throw InvalidArgumentException::fromArgument('reportId', 'null');
+        }
+
+        return $this->reportId;
+    }
+
+    public function setReportId(int $reportId): void
+    {
+        $this->reportId = $reportId;
+    }
+
+    public function getEventType(): EventType
+    {
+        return $this->eventType;
+    }
+
+    public function getEventId(): Id
+    {
+        return $this->eventId;
+    }
+
+    public function getStatus(): PaymentStatus
+    {
+        return $this->status;
+    }
+
+    public function getStatusCode(): int
+    {
+        return $this->status->getStatus();
+    }
+
+    public function isAccepte
