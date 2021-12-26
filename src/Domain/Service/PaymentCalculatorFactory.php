@@ -39,4 +39,8 @@ class PaymentCalculatorFactory
         return new PaymentCalculator(
             $campaigns,
             $bidStrategies,
-            $this->campaignCostRepository
+            $this->campaignCostRepository,
+            $this->config
+        );
+    }
+}
