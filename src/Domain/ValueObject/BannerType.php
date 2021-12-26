@@ -43,4 +43,18 @@ final class BannerType
         return $this->type === self::IMAGE;
     }
 
-    pu
+    public function isHtml(): bool
+    {
+        return $this->type === self::HTML;
+    }
+
+    public function toString(): string
+    {
+        return $this->type;
+    }
+
+    public function __toString(): string
+    {
+        return $this->toString();
+    }
+}
