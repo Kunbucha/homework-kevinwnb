@@ -34,4 +34,33 @@ final class EventType
         return new self(self::CONVERSION);
     }
 
-    public static function creat
+    public static function createView(): self
+    {
+        return new self(self::VIEW);
+    }
+
+    public function isClick(): bool
+    {
+        return $this->type === self::CLICK;
+    }
+
+    public function isConversion(): bool
+    {
+        return $this->type === self::CONVERSION;
+    }
+
+    public function isView(): bool
+    {
+        return $this->type === self::VIEW;
+    }
+
+    public function toString(): string
+    {
+        return $this->type;
+    }
+
+    public function __toString(): string
+    {
+        return $this->toString();
+    }
+}
