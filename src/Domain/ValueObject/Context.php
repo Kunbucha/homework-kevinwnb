@@ -67,4 +67,12 @@ class Context
     {
         $items = $this->data;
         foreach ($keys as $key) {
-            if (!is_array
+            if (!is_array($items) || !array_key_exists($key, $items)) {
+                return null;
+            }
+            $items = $items[$key];
+        }
+
+        return $items;
+    }
+}
