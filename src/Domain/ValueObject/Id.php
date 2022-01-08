@@ -19,4 +19,31 @@ class Id
             throw InvalidArgumentException::fromArgument('id', $id);
         }
 
-        $t
+        $this->id = $id;
+    }
+
+    public function equals(Id $id): bool
+    {
+        return $this->id === $id->id;
+    }
+
+    public function toBin(): string
+    {
+        return hex2bin($this->id);
+    }
+
+    public function toString(): string
+    {
+        return $this->id;
+    }
+
+    public function __toString(): string
+    {
+        return $this->toString();
+    }
+
+    public static function fromBin(string $bin): Id
+    {
+        return new self(bin2hex($bin));
+    }
+}
