@@ -28,4 +28,28 @@ final class PaymentCalculatorConfig
         $this->autoCpmDefault = (int)($config['autoCpmDefault'] ?? $this->autoCpmDefault);
     }
 
-    public function getHumanS
+    public function getHumanScoreThreshold(): float
+    {
+        return $this->humanScoreThreshold;
+    }
+
+    public function getConversionHumanScoreThreshold(): float
+    {
+        return $this->conversionHumanScoreThreshold;
+    }
+
+    public function getMetaverseHumanScoreThreshold(): float
+    {
+        return $this->metaverseHumanScoreThreshold;
+    }
+
+    public function getAutoCpmBudgetThreshold(): float
+    {
+        return $this->autoCpmBudgetThreshold;
+    }
+
+    public function getAutoCpmDefault(): int
+    {
+        return $this->autoCpmDefault;
+    }
+}
