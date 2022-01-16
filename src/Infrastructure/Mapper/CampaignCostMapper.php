@@ -32,4 +32,30 @@ class CampaignCostMapper
         ];
     }
 
-    public static
+    public static function types(): array
+    {
+        return [
+            'id' => Types::INTEGER,
+            'report_id' => Types::INTEGER,
+            'campaign_id' => Types::BINARY,
+            'score' => Types::FLOAT,
+            'max_cpm' => Types::INTEGER,
+            'cpm_factor' => Types::FLOAT,
+            'views' => Types::INTEGER,
+            'views_cost' => Types::INTEGER,
+            'clicks' => Types::INTEGER,
+            'clicks_cost' => Types::INTEGER,
+            'conversions' => Types::INTEGER,
+            'conversions_cost' => Types::INTEGER,
+        ];
+    }
+
+    public static function fill(array $row): CampaignCost
+    {
+        return new CampaignCost(
+            (int)$row['report_id'],
+            Id::fromBin($row['campaign_id']),
+            isset($row['score']) ? (float)$row['score'] : null,
+            (int)$row['max_cpm'],
+            (float)$row['cpm_factor'],
+            (int)$row['views'
