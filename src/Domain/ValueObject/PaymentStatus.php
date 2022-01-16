@@ -46,4 +46,38 @@ final class PaymentStatus
 
     public function getStatus(): ?int
     {
-        return $t
+        return $this->status;
+    }
+
+    public function isProcessed(): bool
+    {
+        return $this->status !== null;
+    }
+
+    public function isAccepted(): bool
+    {
+        return $this->status === self::ACCEPTED;
+    }
+
+    public function isRejected(): bool
+    {
+        return $this->isProcessed() && !$this->isAccepted();
+    }
+
+    public function toString(): string
+    {
+        if (!$this->isProcessed()) {
+            return 'unprocessed';
+        }
+        if (array_key_exists($this->status, self::$labels)) {
+            return self::$labels[$this->status];
+        }
+
+        return 'rejected:unknown';
+    }
+
+    public function __toString(): string
+    {
+        return $this->toString();
+    }
+}
