@@ -58,4 +58,12 @@ class CampaignCostMapper
             isset($row['score']) ? (float)$row['score'] : null,
             (int)$row['max_cpm'],
             (float)$row['cpm_factor'],
-            (int)$row['views'
+            (int)$row['views'],
+            (int)$row['views_cost'],
+            (int)$row['clicks'],
+            (int)$row['clicks_cost'],
+            (int)$row['conversions'],
+            (int)$row['conversions_cost'],
+        );
+    }
+}
