@@ -30,4 +30,35 @@ abstract class EventMapper
             'user_id' => $event->getUserId()->toBin(),
             'human_score' => $event->getHumanScore(),
             'page_rank' => $event->getPageRank(),
-            'keywords' => $event->ge
+            'keywords' => $event->getKeywords(),
+            'context' => $event->getContextData(),
+        ];
+    }
+
+    public static function types(): array
+    {
+        return [
+            'id' => Types::BINARY,
+            'time' => Types::DATETIME_MUTABLE,
+            'case_id' => Types::BINARY,
+            'case_time' => Types::DATETIME_MUTABLE,
+            'publisher_id' => Types::BINARY,
+            'zone_id' => Types::BINARY,
+            'advertiser_id' => Types::BINARY,
+            'campaign_id' => Types::BINARY,
+            'banner_id' => Types::BINARY,
+            'impression_id' => Types::BINARY,
+            'tracking_id' => Types::BINARY,
+            'user_id' => Types::BINARY,
+            'human_score' => Types::FLOAT,
+            'page_rank' => Types::FLOAT,
+            'keywords' => Types::JSON,
+            'context' => Types::JSON,
+        ];
+    }
+
+    public static function fillRaw(array $row): array
+    {
+        return [
+            'type' => static::getEventType(),
+            'id
