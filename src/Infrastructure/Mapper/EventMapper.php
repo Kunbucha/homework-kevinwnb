@@ -77,4 +77,6 @@ abstract class EventMapper
             'page_rank' => (float)$row['page_rank'],
             'keywords' => json_decode($row['keywords'], true),
             'context' => json_decode($row['context'], true),
- 
+        ];
+    }
+}
