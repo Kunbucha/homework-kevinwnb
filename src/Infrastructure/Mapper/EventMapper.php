@@ -61,4 +61,20 @@ abstract class EventMapper
     {
         return [
             'type' => static::getEventType(),
-            'id
+            'id' => bin2hex($row['id']),
+            'time' => $row['time'],
+            'case_id' => bin2hex($row['case_id']),
+            'case_time' => $row['case_time'],
+            'publisher_id' => bin2hex($row['publisher_id']),
+            'zone_id' => $row['zone_id'] !== null ? bin2hex($row['zone_id']) : null,
+            'advertiser_id' => bin2hex($row['advertiser_id']),
+            'campaign_id' => bin2hex($row['campaign_id']),
+            'banner_id' => bin2hex($row['banner_id']),
+            'impression_id' => bin2hex($row['impression_id']),
+            'tracking_id' => bin2hex($row['tracking_id']),
+            'user_id' => bin2hex($row['user_id']),
+            'human_score' => (float)$row['human_score'],
+            'page_rank' => (float)$row['page_rank'],
+            'keywords' => json_decode($row['keywords'], true),
+            'context' => json_decode($row['context'], true),
+ 
