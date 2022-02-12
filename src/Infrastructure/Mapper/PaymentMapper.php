@@ -36,4 +36,15 @@ class PaymentMapper
         ];
     }
 
-    public static fu
+    public static function fillRaw(array $row): array
+    {
+        return [
+            'id' => (int)$row['id'],
+            'report_id' => (int)$row['report_id'],
+            'event_id' => bin2hex($row['event_id']),
+            'event_type' => $row['event_type'],
+            'status' => (int)$row['status'],
+            'value' => $row['value'] === null ? null : (int)$row['value'],
+        ];
+    }
+}
