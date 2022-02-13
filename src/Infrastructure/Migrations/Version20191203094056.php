@@ -27,4 +27,19 @@ final class Version20191203094056 extends AbstractMigration
         );
         $this->addSql(<<<SQL
 ALTER TABLE conversion_events
-    ADD COLUMN case_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER case_id
+    ADD COLUMN case_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER case_id;
+SQL
+        );
+
+        $this->addSql('UPDATE view_events SET case_time = time');
+        $this->addSql('UPDATE click_events SET case_time = time');
+        $this->addSql('UPDATE conversion_events SET case_time = time');
+    }
+
+    public function down(Schema $schema): void
+    {
+        $this->addSql('ALTER TABLE view_events DROP COLUMN case_time');
+        $this->addSql('ALTER TABLE click_events DROP COLUMN case_time');
+        $this->addSql('ALTER TABLE conversion_events DROP COLUMN case_time');
+    }
+}
