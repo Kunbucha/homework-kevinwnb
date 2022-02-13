@@ -145,3 +145,33 @@ final class Version20191002095930 extends AbstractMigration
                 PRIMARY KEY (id),
                 INDEX status (status)
             )'
+        );
+
+        $this->addSql(
+            'CREATE TABLE payments (
+                id BIGINT(20) NOT NULL AUTO_INCREMENT,
+                report_id BIGINT(20) NOT NULL,
+                event_id VARBINARY(16) NOT NULL,
+                event_type VARCHAR(16) NOT NULL,
+                status TINYINT(3) NOT NULL,
+                value BIGINT(20) NULL DEFAULT NULL,
+                PRIMARY KEY (id),
+                INDEX report_id (report_id),
+                CONSTRAINT payments_payment_reports FOREIGN KEY (report_id)
+                    REFERENCES payment_reports (id) ON DELETE CASCADE
+            )'
+        );
+    }
+
+    public function down(Schema $schema): void
+    {
+        $this->addSql('DROP TABLE conversions');
+        $this->addSql('DROP TABLE banners');
+        $this->addSql('DROP TABLE campaigns');
+        $this->addSql('DROP TABLE view_events');
+        $this->addSql('DROP TABLE click_events');
+        $this->addSql('DROP TABLE conversion_events');
+        $this->addSql('DROP TABLE payments');
+        $this->addSql('DROP TABLE payment_reports');
+    }
+}
