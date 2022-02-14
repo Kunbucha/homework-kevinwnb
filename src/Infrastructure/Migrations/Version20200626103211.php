@@ -16,4 +16,11 @@ final class Version20200626103211 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE bid_strategy_detai
+        $this->addSql('ALTER TABLE bid_strategy_details ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL');
+    }
+
+    public function down(Schema $schema): void
+    {
+        $this->addSql('ALTER TABLE bid_strategy_details DROP COLUMN deleted_at');
+    }
+}
