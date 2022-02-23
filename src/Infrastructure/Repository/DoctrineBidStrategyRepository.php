@@ -32,4 +32,32 @@ final class DoctrineBidStrategyRepository extends DoctrineModelUpdater implement
             }
         }
         $ids = array_keys($mapIds);
-        $deleteQuery = sprintf('DELETE FROM %s WHERE bid_strategy_
+        $deleteQuery = sprintf('DELETE FROM %s WHERE bid_strategy_id IN (?)', BidStrategyMapper::table());
+
+        $this->db->beginTransaction();
+        try {
+            $this->db->executeQuery($deleteQuery, [$ids], [Connection::PARAM_STR_ARRAY]);
+
+            foreach ($bidStrategies as $bidStrategy) {
+                /*  @var $bidStrategy BidStrategy */
+                $this->db->insert(
+                    BidStrategyMapper::table(),
+                    BidStrategyMapper::map($bidStrategy),
+                    BidStrategyMapper::types()
+                );
+
+                ++$count;
+            }
+            $this->db->commit();
+        } catch (DBALException $exception) {
+            $this->db->rollBack();
+            throw new DomainRepositoryException($exception->getMessage());
+        }
+
+        return $count;
+    }
+
+    public function deleteAll(IdCollection $ids): int
+    {
+        try {
+            $result = $this->softDelete(BidStrategyMapper::table(), $ids->toBinArray(), 'bid_stra
