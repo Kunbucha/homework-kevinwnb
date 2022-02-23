@@ -60,4 +60,32 @@ final class DoctrineBidStrategyRepository extends DoctrineModelUpdater implement
     public function deleteAll(IdCollection $ids): int
     {
         try {
-            $result = $this->softDelete(BidStrategyMapper::table(), $ids->toBinArray(), 'bid_stra
+            $result = $this->softDelete(BidStrategyMapper::table(), $ids->toBinArray(), 'bid_strategy_id');
+        } catch (DBALException $exception) {
+            throw new DomainRepositoryException($exception->getMessage());
+        }
+
+        return $result;
+    }
+
+    public function fetchAll(): BidStrategyCollection
+    {
+        $query = sprintf(
+            'SELECT * FROM %s WHERE deleted_at IS NULL OR deleted_at > NOW() - INTERVAL 32 DAY',
+            BidStrategyMapper::table()
+        );
+
+        try {
+            $rows = $this->db->fetchAllAssociative($query);
+        } catch (DBALException $exception) {
+            throw new DomainRepositoryException($exception->getMessage());
+        }
+
+        $bidStrategies = new BidStrategyCollection();
+        foreach ($rows as $row) {
+            $bidStrategies->add(BidStrategyMapper::fill($row));
+        }
+
+        return $bidStrategies;
+    }
+}
