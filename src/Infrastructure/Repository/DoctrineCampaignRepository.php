@@ -26,4 +26,25 @@ final class DoctrineCampaignRepository extends DoctrineModelUpdater implements C
         try {
             $ids = new IdCollection();
             foreach ($campaigns as $campaign) {
-             
+                /*  @var $campaign Campaign */
+                $ids->add($campaign->getId());
+            }
+            $this->softDelete(BannerMapper::table(), $ids->toBinArray(), 'campaign_id');
+            $this->softDelete(ConversionMapper::table(), $ids->toBinArray(), 'campaign_id');
+
+            foreach ($campaigns as $campaign) {
+                /*  @var $campaign Campaign */
+                $this->upsert(
+                    CampaignMapper::table(),
+                    $campaign->getId(),
+                    CampaignMapper::map($campaign),
+                    CampaignMapper::types()
+                );
+                foreach ($campaign->getBanners() as $banner) {
+                    /*  @var $banner Banner */
+                    $this->upsert(
+                        BannerMapper::table(),
+                        $banner->getId(),
+                        BannerMapper::map($banner),
+                        BannerMapper::types()
+                  
