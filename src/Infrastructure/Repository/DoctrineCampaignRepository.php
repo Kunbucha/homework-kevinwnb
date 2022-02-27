@@ -72,4 +72,28 @@ final class DoctrineCampaignRepository extends DoctrineModelUpdater implements C
         try {
             $this->softDelete(BannerMapper::table(), $ids->toBinArray(), 'campaign_id');
             $this->softDelete(ConversionMapper::table(), $ids->toBinArray(), 'campaign_id');
-            $result = $t
+            $result = $this->softDelete(CampaignMapper::table(), $ids->toBinArray());
+        } catch (DBALException $exception) {
+            throw new DomainRepositoryException($exception->getMessage());
+        }
+
+        return $result;
+    }
+
+    public function fetchAll(): CampaignCollection
+    {
+        $query = 'SELECT * FROM %s WHERE deleted_at IS NULL OR deleted_at > NOW() - INTERVAL 32 DAY';
+
+        try {
+            $campaignRows = $this->db->fetchAllAssociative(sprintf($query, CampaignMapper::table()));
+            $bannerRows = $this->db->fetchAllAssociative(sprintf($query, BannerMapper::table()));
+            $conversionRows = $this->db->fetchAllAssociative(sprintf($query, ConversionMapper::table()));
+        } catch (DBALException $exception) {
+            throw new DomainRepositoryException($exception->getMessage());
+        }
+
+        $banners = [];
+        $conversions = [];
+
+        foreach ($bannerRows as $row) {
+          
