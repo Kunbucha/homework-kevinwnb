@@ -47,4 +47,29 @@ final class DoctrineCampaignRepository extends DoctrineModelUpdater implements C
                         $banner->getId(),
                         BannerMapper::map($banner),
                         BannerMapper::types()
-                  
+                    );
+                }
+                foreach ($campaign->getConversions() as $conversion) {
+                    /*  @var $conversion Conversion */
+                    $this->upsert(
+                        ConversionMapper::table(),
+                        $conversion->getId(),
+                        ConversionMapper::map($conversion),
+                        ConversionMapper::types()
+                    );
+                }
+                ++$count;
+            }
+        } catch (DBALException $exception) {
+            throw new DomainRepositoryException($exception->getMessage());
+        }
+
+        return $count;
+    }
+
+    public function deleteAll(IdCollection $ids): int
+    {
+        try {
+            $this->softDelete(BannerMapper::table(), $ids->toBinArray(), 'campaign_id');
+            $this->softDelete(ConversionMapper::table(), $ids->toBinArray(), 'campaign_id');
+            $result = $t
