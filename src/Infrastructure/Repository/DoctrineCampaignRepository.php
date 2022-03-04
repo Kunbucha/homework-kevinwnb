@@ -96,4 +96,23 @@ final class DoctrineCampaignRepository extends DoctrineModelUpdater implements C
         $conversions = [];
 
         foreach ($bannerRows as $row) {
-          
+            $banners[$row['campaign_id']][] = BannerMapper::fill($row);
+        }
+        foreach ($conversionRows as $row) {
+            $conversions[$row['campaign_id']][] = ConversionMapper::fill($row);
+        }
+
+        $campaigns = new CampaignCollection();
+        foreach ($campaignRows as $row) {
+            $campaigns->add(
+                CampaignMapper::fill(
+                    $row,
+                    new BannerCollection(...$banners[$row['id']] ?? []),
+                    new ConversionCollection(...$conversions[$row['id']] ?? [])
+                )
+            );
+        }
+
+        return $campaigns;
+    }
+}
