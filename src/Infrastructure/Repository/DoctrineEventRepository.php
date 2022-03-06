@@ -36,4 +36,26 @@ final class DoctrineEventRepository extends DoctrineModelUpdater implements Even
         /*  @var $mapper EventMapper */
         $mapper = self::getMapper($type);
         try {
-            return $this->clearInterval($mapper::table(), $timeStar
+            return $this->clearInterval($mapper::table(), $timeStart, $timeEnd);
+        } catch (DBALException $exception) {
+            throw new DomainRepositoryException($exception->getMessage());
+        }
+    }
+
+    public function fetchByTime(
+        ?DateTimeInterface $timeStart = null,
+        ?DateTimeInterface $timeEnd = null
+    ): iterable {
+        $params = [];
+        $types = [];
+        $query = 'SELECT * FROM %s WHERE 1=1';
+        $query .= self::timeCondition($timeStart, $timeEnd, $params, $types);
+
+        try {
+            $result = $this->db->executeQuery(sprintf($query, ViewEventMapper::table()), $params, $types);
+            while ($row = $result->fetchAssociative()) {
+                yield ViewEventMapper::fillRaw($row);
+            }
+            $result = $this->db->executeQuery(sprintf($query, ClickEventMapper::table()), $params, $types);
+            while ($row = $result->fetchAssociative()) {
+                yield ClickE
