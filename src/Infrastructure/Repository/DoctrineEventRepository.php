@@ -58,4 +58,32 @@ final class DoctrineEventRepository extends DoctrineModelUpdater implements Even
             }
             $result = $this->db->executeQuery(sprintf($query, ClickEventMapper::table()), $params, $types);
             while ($row = $result->fetchAssociative()) {
-                yield ClickE
+                yield ClickEventMapper::fillRaw($row);
+            }
+            $result = $this->db->executeQuery(sprintf($query, ConversionEventMapper::table()), $params, $types);
+            while ($row = $result->fetchAssociative()) {
+                yield ConversionEventMapper::fillRaw($row);
+            }
+        } catch (DBALException | DBALDriverException $exception) {
+            throw new DomainRepositoryException($exception->getMessage());
+        }
+
+        return null;
+    }
+
+    private static function getMapper(EventType $type): string
+    {
+        if ($type->isClick()) {
+            $mapper = ClickEventMapper::class;
+        } elseif ($type->isConversion()) {
+            $mapper = ConversionEventMapper::class;
+        } else {
+            $mapper = ViewEventMapper::class;
+        }
+
+        return $mapper;
+    }
+
+    private function upsertEvents(
+        EventCollection $events,
+        string $mapper
