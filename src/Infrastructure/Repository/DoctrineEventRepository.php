@@ -87,3 +87,29 @@ final class DoctrineEventRepository extends DoctrineModelUpdater implements Even
     private function upsertEvents(
         EventCollection $events,
         string $mapper
+    ): int {
+        /*  @var $mapper EventMapper */
+        $count = 0;
+        try {
+            $this->clearInterval($mapper::table(), $events->getTimeStart(), $events->getTimeEnd());
+            foreach ($events as $event) {
+                /*  @var $event Event */
+                try {
+                    $this->db->insert(
+                        $mapper::table(),
+                        $mapper::map($event),
+                        $mapper::types()
+                    );
+                } catch (UniqueConstraintViolationException $exception) {
+                    throw new InvalidDataException(sprintf('Duplicate event id [%s]', $event->getId()));
+                }
+                ++$count;
+            }
+        } catch (DBALException $exception) {
+            throw new DomainRepositoryException($exception->getMessage());
+        }
+
+        return $count;
+    }
+
+    
