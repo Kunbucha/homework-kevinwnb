@@ -112,4 +112,35 @@ final class DoctrineEventRepository extends DoctrineModelUpdater implements Even
         return $count;
     }
 
+    /**
+     * @param string $table
+     * @param DateTimeInterface|null $timeStart
+     * @param DateTimeInterface|null $timeEnd
+     *
+     * @return int
+     * @throws DBALException
+     */
+    private function clearInterval(
+        string $table,
+        ?DateTimeInterface $timeStart = null,
+        ?DateTimeInterface $timeEnd = null
+    ): int {
+        $params = [];
+        $types = [];
+        $query = sprintf('DELETE FROM %s WHERE 1=1', $table);
+        $query .= self::timeCondition($timeStart, $timeEnd, $params, $types);
+
+        return $this->db->executeStatement($query, $params, $types);
+    }
+
+    private static function timeCondition(
+        ?DateTimeInterface $timeStart,
+        ?DateTimeInterface $timeEnd,
+        array &$params,
+        array &$types
+    ): string {
+        $query = '';
+
+        if ($timeStart !== null) {
+            $query .= ' AND time >= ?';
     
