@@ -143,4 +143,15 @@ final class DoctrineEventRepository extends DoctrineModelUpdater implements Even
 
         if ($timeStart !== null) {
             $query .= ' AND time >= ?';
-    
+            $params[] = $timeStart;
+            $types[] = Types::DATETIME_MUTABLE;
+        }
+        if ($timeEnd !== null) {
+            $query .= ' AND time <= ?';
+            $params[] = $timeEnd;
+            $types[] = Types::DATETIME_MUTABLE;
+        }
+
+        return $query;
+    }
+}
