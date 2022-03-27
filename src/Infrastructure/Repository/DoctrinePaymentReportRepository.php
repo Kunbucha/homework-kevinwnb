@@ -45,4 +45,32 @@ final class DoctrinePaymentReportRepository extends DoctrineModelUpdater impleme
         return $this->fetchQuery();
     }
 
-    public function fetchById(int ...$ids): PaymentR
+    public function fetchById(int ...$ids): PaymentReportCollection
+    {
+        $conditions = [];
+        foreach ($ids as $id) {
+            $conditions[] = $id;
+        }
+        return $this->fetchQuery('id IN (?)', [$conditions], [Connection::PARAM_INT_ARRAY]);
+    }
+
+    public function fetchByStatus(PaymentReportStatus ...$statuses): PaymentReportCollection
+    {
+        $conditions = [];
+        foreach ($statuses as $status) {
+            $conditions[] = $status->getStatus();
+        }
+        return $this->fetchQuery('status IN (?)', [$conditions], [Connection::PARAM_INT_ARRAY]);
+    }
+
+    public function save(PaymentReport $report): void
+    {
+        try {
+            $this->upsert(
+                PaymentReportMapper::table(),
+                $report->getId(),
+                PaymentReportMapper::map($report),
+                PaymentReportMapper::types()
+            );
+        } catch (DBALException $exception) {
+            throw new DomainRepositoryExc
