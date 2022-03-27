@@ -73,4 +73,30 @@ final class DoctrinePaymentReportRepository extends DoctrineModelUpdater impleme
                 PaymentReportMapper::types()
             );
         } catch (DBALException $exception) {
-            throw new DomainRepositoryExc
+            throw new DomainRepositoryException($exception->getMessage());
+        }
+    }
+
+    public function deleteByTime(?DateTimeInterface $timeStart = null, ?DateTimeInterface $timeEnd = null): int
+    {
+        try {
+            $params = [];
+            $types = [];
+            $query = sprintf('DELETE FROM %s WHERE 1=1', PaymentReportMapper::table());
+
+            if ($timeStart !== null) {
+                $query .= ' AND id >= ?';
+                $params[] = $timeStart->getTimestamp();
+            }
+            if ($timeEnd !== null) {
+                $query .= ' AND id <= ?';
+                $params[] = $timeEnd->getTimestamp();
+            }
+
+            $this->db->beginTransaction();
+            $r = $this->db->executeStatement($query, $params, $types);
+            $this->db->commit();
+            return $r;
+        } catch (DBALException $exception) {
+            $this->db->rollBack();
+            throw new DomainRepositoryException($exception->g
