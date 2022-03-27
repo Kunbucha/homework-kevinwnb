@@ -99,4 +99,33 @@ final class DoctrinePaymentReportRepository extends DoctrineModelUpdater impleme
             return $r;
         } catch (DBALException $exception) {
             $this->db->rollBack();
-            throw new DomainRepositoryException($exception->g
+            throw new DomainRepositoryException($exception->getMessage());
+        }
+    }
+
+    private function fillCollection(array $result): PaymentReportCollection
+    {
+        $reports = new PaymentReportCollection();
+        foreach ($result as $row) {
+            $reports->add(PaymentReportMapper::fill($row));
+        }
+        return $reports;
+    }
+
+    private function fetchQuery(
+        ?string $condition = null,
+        array $params = [],
+        array $types = []
+    ): PaymentReportCollection {
+        try {
+            $result = $this->db->fetchAllAssociative(
+                sprintf('SELECT * FROM %s WHERE %s', PaymentReportMapper::table(), $condition ?? '1=1'),
+                $params,
+                $types
+            );
+        } catch (DBALException $exception) {
+            throw new DomainRepositoryException($exception->getMessage());
+        }
+        return $this->fillCollection($result);
+    }
+}
