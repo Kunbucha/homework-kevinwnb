@@ -56,4 +56,10 @@ final class DoctrinePaymentRepository extends DoctrineModelUpdater implements Pa
         try {
             $result = $this->db->executeQuery($query, [$reportId]);
             while ($row = $result->fetchAssociative()) {
-                yield PaymentMapper::
+                yield PaymentMapper::fillRaw($row);
+            }
+        } catch (DBALException | DBALDriverException $exception) {
+            throw new DomainRepositoryException($exception->getMessage());
+        }
+    }
+}
