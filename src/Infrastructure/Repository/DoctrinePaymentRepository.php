@@ -27,4 +27,33 @@ final class DoctrinePaymentRepository extends DoctrineModelUpdater implements Pa
             );
         } catch (DBALException $exception) {
             throw new DomainRepositoryException($exception->getMessage());
-      
+        }
+    }
+
+    public function deleteByReportId(int $reportId): int
+    {
+        try {
+            return $this->db->executeStatement(
+                sprintf('DELETE FROM %s WHERE report_id = ?', PaymentMapper::table()),
+                [$reportId]
+            );
+        } catch (DBALException $exception) {
+            throw new DomainRepositoryException($exception->getMessage());
+        }
+    }
+
+    public function fetchByReportId(int $reportId, ?int $limit = null, ?int $offset = null): iterable
+    {
+        $query = sprintf('SELECT * FROM %s WHERE report_id = ?', PaymentMapper::table());
+
+        if ($limit !== null) {
+            $query .= sprintf(' LIMIT %d', $limit);
+            if ($offset !== null) {
+                $query .= sprintf(' OFFSET %d', $offset);
+            }
+        }
+
+        try {
+            $result = $this->db->executeQuery($query, [$reportId]);
+            while ($row = $result->fetchAssociative()) {
+                yield PaymentMapper::
