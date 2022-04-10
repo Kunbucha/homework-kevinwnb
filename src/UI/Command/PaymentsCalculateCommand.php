@@ -17,4 +17,31 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class Payment
+class PaymentsCalculateCommand extends Command
+{
+    use LockableTrait;
+
+    protected static $defaultName = 'ops:payments:calculate';
+
+    private ReportFetchCompletedCommand $reportFetchCommand;
+
+    private ReportCalculateCommand $reportCalculateCommand;
+
+    public function __construct(
+        ReportFetchCompletedCommand $reportFetchCommand,
+        ReportCalculateCommand $reportCalculateCommand,
+        string $name = null
+    ) {
+        parent::__construct($name);
+        $this->reportFetchCommand = $reportFetchCommand;
+        $this->reportCalculateCommand = $reportCalculateCommand;
+    }
+
+    protected function configure()
+    {
+        $this
+            ->setDescription('Calculates payments for events')
+            ->addArgument('date', InputArgument::OPTIONAL, 'Report date or timestamp')
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Force calculation of incomplete report');
+    }
+
