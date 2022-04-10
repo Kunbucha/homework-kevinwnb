@@ -16,4 +16,11 @@ final class InfoHelper
                 $value = implode(',', $value);
             }
             if (strpos((string)$value, ' ') !== false) {
-    
+                $value = '"' . $value . '"';
+            }
+            $response .= sprintf("%s=%s\n", $key, $value);
+        }
+
+        return $response;
+    }
+}
