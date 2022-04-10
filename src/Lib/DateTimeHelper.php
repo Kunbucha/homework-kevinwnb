@@ -27,4 +27,13 @@ final class DateTimeHelper
     }
 
     public static function fromString(string $date): DateTimeImmutable
-   
+    {
+        try {
+            return new DateTimeImmutable($date);
+        } catch (Throwable $exception) {
+            throw new DateTimeException(
+                str_replace('DateTimeImmutable::__construct(): ', '', $exception->getMessage())
+            );
+        }
+    }
+}
