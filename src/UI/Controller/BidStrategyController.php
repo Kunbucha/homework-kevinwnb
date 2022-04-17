@@ -12,4 +12,32 @@ use App\Application\Exception\ValidationException;
 use App\Domain\ValueObject\PaymentCalculatorConfig;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfon
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+
+class BidStrategyController extends AbstractController
+{
+    private BidStrategyUpdateCommand $updateCommand;
+
+    private BidStrategyDeleteCommand $deleteCommand;
+
+    private LoggerInterface $logger;
+
+    public function __construct(
+        BidStrategyUpdateCommand $updateCommand,
+        BidStrategyDeleteCommand $deleteCommand,
+        LoggerInterface $logger
+    ) {
+        $this->updateCommand = $updateCommand;
+        $this->deleteCommand = $deleteCommand;
+        $this->logger = $logger;
+    }
+
+    public function updateBidStrategies(Request $request): Response
+    {
+        $this->logger->debug('Call update bid strategies endpoint');
+
+        $input = json_decode($request->getContent(), true);
+        if ($inp
