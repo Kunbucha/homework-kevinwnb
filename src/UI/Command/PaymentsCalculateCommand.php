@@ -72,4 +72,36 @@ class PaymentsCalculateCommand extends Command
                 }
             }
 
-            $this->calculate($timestamp, $input->getOption('force'), $io)
+            $this->calculate($timestamp, $input->getOption('force'), $io);
+        }
+
+        $this->release();
+
+        return self::SUCCESS;
+    }
+
+    private function calculateAll(SymfonyStyle $io)
+    {
+        $dto = $this->reportFetchCommand->execute();
+        $ids = $dto->getReportIds();
+
+        $io->comment(sprintf('Found %d complete reports.', count($ids)));
+        foreach ($ids as $reportId) {
+            $this->calculate($reportId, false, $io);
+        }
+    }
+
+    private static function getReportInfo(int $timestamp): string
+    {
+        $interval = 3600;
+
+        $reportId = (int)floor($timestamp / $interval) * $interval;
+        $timeStart = DateTimeHelper::fromTimestamp($reportId);
+        $timeEnd = DateTimeHelper::fromTimestamp($reportId + $interval - 1);
+
+        return sprintf(
+            'Calculating report #%d from %s to %s',
+            $reportId,
+            $timeStart->format('Y-m-d H:i:s'),
+            $timeEnd->format('Y-m-d H:i:s')
+        );
