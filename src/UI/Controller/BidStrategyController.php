@@ -40,4 +40,30 @@ class BidStrategyController extends AbstractController
         $this->logger->debug('Call update bid strategies endpoint');
 
         $input = json_decode($request->getContent(), true);
-        if ($inp
+        if ($input === null || !is_array($input)) {
+            throw new UnprocessableEntityHttpException('Invalid input data');
+        }
+
+        try {
+            $dto = new BidStrategyUpdateDTO($input);
+        } catch (ValidationException $exception) {
+            throw new UnprocessableEntityHttpException($exception->getMessage());
+        }
+
+        $this->updateCommand->execute($dto);
+
+        return new JsonResponse([], Response::HTTP_NO_CONTENT);
+    }
+
+    public function deleteBidStrategies(Request $request): Response
+    {
+        $this->logger->debug('Call delete bid strategies endpoint');
+
+        $input = json_decode($request->getContent(), true);
+        if ($input === null || !is_array($input)) {
+            throw new UnprocessableEntityHttpException('Invalid input data');
+        }
+
+        try {
+            $dto = new BidStrategyDeleteDTO($input);
+        } catch (ValidationException $exception
