@@ -105,3 +105,20 @@ class PaymentsCalculateCommand extends Command
             $timeStart->format('Y-m-d H:i:s'),
             $timeEnd->format('Y-m-d H:i:s')
         );
+    }
+
+    private function calculate(int $timestamp, bool $force, SymfonyStyle $io)
+    {
+        $io->comment(self::getReportInfo($timestamp));
+
+        try {
+            $count = $this->reportCalculateCommand->execute($timestamp, $force);
+        } catch (FetchingException $exception) {
+            $io->warning($exception->getMessage());
+
+            return;
+        }
+
+        $io->success(sprintf('%d payments calculated.', $count));
+    }
+}
