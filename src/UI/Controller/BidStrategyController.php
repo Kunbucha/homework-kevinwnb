@@ -66,4 +66,12 @@ class BidStrategyController extends AbstractController
 
         try {
             $dto = new BidStrategyDeleteDTO($input);
-        } catch (ValidationException $exception
+        } catch (ValidationException $exception) {
+            throw new UnprocessableEntityHttpException($exception->getMessage());
+        }
+
+        $this->deleteCommand->execute($dto);
+
+        return new JsonResponse([], Response::HTTP_NO_CONTENT);
+    }
+}
