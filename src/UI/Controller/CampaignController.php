@@ -49,4 +49,28 @@ class CampaignController extends AbstractController
             throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
-        
+        $this->updateCommand->execute($dto);
+
+        return new JsonResponse([], Response::HTTP_NO_CONTENT);
+    }
+
+    public function deleteCampaigns(Request $request): Response
+    {
+        $this->logger->debug('Call delete campaigns endpoint');
+
+        $input = json_decode($request->getContent(), true);
+        if ($input === null || !is_array($input)) {
+            throw new UnprocessableEntityHttpException('Invalid input data');
+        }
+
+        try {
+            $dto = new CampaignDeleteDTO($input);
+        } catch (ValidationException $exception) {
+            throw new UnprocessableEntityHttpException($exception->getMessage());
+        }
+
+        $this->deleteCommand->execute($dto);
+
+        return new JsonResponse([], Response::HTTP_NO_CONTENT);
+    }
+}
