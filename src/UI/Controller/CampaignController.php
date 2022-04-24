@@ -20,4 +20,33 @@ class CampaignController extends AbstractController
 {
     private CampaignUpdateCommand $updateCommand;
 
-  
+    private CampaignDeleteCommand $deleteCommand;
+
+    private LoggerInterface $logger;
+
+    public function __construct(
+        CampaignUpdateCommand $updateCommand,
+        CampaignDeleteCommand $deleteCommand,
+        LoggerInterface $logger
+    ) {
+        $this->updateCommand = $updateCommand;
+        $this->deleteCommand = $deleteCommand;
+        $this->logger = $logger;
+    }
+
+    public function updateCampaigns(Request $request): Response
+    {
+        $this->logger->debug('Call update campaigns endpoint');
+
+        $input = json_decode($request->getContent(), true);
+        if ($input === null || !is_array($input)) {
+            throw new UnprocessableEntityHttpException('Invalid input data');
+        }
+
+        try {
+            $dto = new CampaignUpdateDTO($input);
+        } catch (ValidationException $exception) {
+            throw new UnprocessableEntityHttpException($exception->getMessage());
+        }
+
+        
