@@ -32,4 +32,32 @@ class EventController extends AbstractController
     private function parseRequest(Request $request, string $dto): EventUpdateDTO
     {
         $input = json_decode($request->getContent(), true);
-     
+        if ($input === null || !is_array($input)) {
+            throw new UnprocessableEntityHttpException('Invalid input data');
+        }
+
+        try {
+            $dto = new $dto($input);
+        } catch (ValidationException $exception) {
+            throw new UnprocessableEntityHttpException($exception->getMessage());
+        }
+
+        return $dto;
+    }
+
+    private function updateEvents(EventUpdateDTO $dto): int
+    {
+        try {
+            $result = $this->eventUpdateCommand->execute($dto);
+        } catch (ValidationException $exception) {
+            throw new UnprocessableEntityHttpException($exception->getMessage());
+        }
+
+        return $result;
+    }
+
+    public function updateViews(Request $request): Response
+    {
+        $this->logger->debug('Running post views command');
+        $result = $this->updateEvents($this->parseRequest($request, ViewEventUpdateDTO::class));
+        $t
