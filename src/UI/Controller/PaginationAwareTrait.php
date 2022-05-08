@@ -27,4 +27,9 @@ trait PaginationAwareTrait
         }
 
         if ($offset !== null) {
-            if (!preg_match('/
+            if (!preg_match('/^\d+$/', $offset)) {
+                throw new UnprocessableEntityHttpException('Offset must be numeric');
+            }
+        }
+    }
+}
