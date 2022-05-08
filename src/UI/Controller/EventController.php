@@ -60,4 +60,26 @@ class EventController extends AbstractController
     {
         $this->logger->debug('Running post views command');
         $result = $this->updateEvents($this->parseRequest($request, ViewEventUpdateDTO::class));
-        $t
+        $this->logger->info(sprintf('%d views updated', $result));
+
+        return new JsonResponse([], Response::HTTP_NO_CONTENT);
+    }
+
+    public function updateClicks(Request $request): Response
+    {
+        $this->logger->debug('Running post clicks command');
+        $result = $this->updateEvents($this->parseRequest($request, ClickEventUpdateDTO::class));
+        $this->logger->info(sprintf('%d clicks updated', $result));
+
+        return new JsonResponse([], Response::HTTP_NO_CONTENT);
+    }
+
+    public function updateConversions(Request $request): Response
+    {
+        $this->logger->debug('Running post conversions command');
+        $result = $this->updateEvents($this->parseRequest($request, ConversionEventUpdateDTO::class));
+        $this->logger->info(sprintf('%d conversions updated', $result));
+
+        return new JsonResponse([], Response::HTTP_NO_CONTENT);
+    }
+}
