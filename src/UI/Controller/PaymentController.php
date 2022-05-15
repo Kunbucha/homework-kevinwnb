@@ -46,4 +46,17 @@ class PaymentController extends AbstractController
             if ($offset === 0 && $recalculate) {
                 $this->paymentCalculateCommand->execute($timestamp, $force);
             }
-           
+            $dto = $this->paymentFetchCommand->execute($timestamp, $limit, $offset);
+        } catch (ReportNotFoundException $exception) {
+            throw new NotFoundHttpException($exception->getMessage());
+        } catch (ReportNotCompleteException $exception) {
+            throw new UnprocessableEntityHttpException($exception->getMessage());
+        }
+
+        if (!$dto->isCalculated()) {
+            throw new HttpException(425, 'Report is not calculated yet');
+        }
+
+        return new JsonResponse(['data' => $dto->getPayments()]);
+    }
+}
