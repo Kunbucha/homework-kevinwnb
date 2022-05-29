@@ -40,4 +40,8 @@ class ReportController extends AbstractController
     {
         $this->logger->debug('Call find reports endpoint');
         $this->validateRequest($request);
-        $ids = array
+        $ids = array_map(fn($id) => (int)$id, $request->get('ids', []));
+        $dto = $this->reportFetchCommand->execute(...$ids);
+        return new JsonResponse(['data' => $dto->getReports()]);
+    }
+}
