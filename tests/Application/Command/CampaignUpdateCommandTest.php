@@ -1,26 +1,27 @@
+
 <?php
 
 declare(strict_types=1);
 
 namespace App\Tests\Application\Command;
 
-use App\Application\Command\CampaignDeleteCommand;
-use App\Application\DTO\CampaignDeleteDTO;
+use App\Application\Command\CampaignUpdateCommand;
+use App\Application\DTO\CampaignUpdateDTO;
 use App\Domain\Repository\CampaignRepository;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
-class CampaignDeleteCommandTest extends TestCase
+class CampaignUpdateCommandTest extends TestCase
 {
     public function testExecuteCommand()
     {
-        $dto = new CampaignDeleteDTO(['campaigns' => []]);
+        $dto = new CampaignUpdateDTO(['campaigns' => []]);
 
         $repository = $this->createMock(CampaignRepository::class);
-        $repository->expects($this->once())->method('deleteAll')->with($dto->getIds())->willReturn(100);
+        $repository->expects($this->once())->method('saveAll')->with($dto->getCampaigns())->willReturn(100);
 
         /** @var CampaignRepository $repository */
-        $command = new CampaignDeleteCommand($repository, new NullLogger());
+        $command = new CampaignUpdateCommand($repository, new NullLogger());
         $this->assertEquals(100, $command->execute($dto));
     }
 }
