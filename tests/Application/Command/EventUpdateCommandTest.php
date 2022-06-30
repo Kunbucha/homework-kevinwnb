@@ -40,4 +40,27 @@ class EventUpdateCommandTest extends TestCase
             ->with($dto->getEvents())
             ->willReturn(100);
 
-        $paymentReportRepository = $this->createMock(PaymentReportRepositor
+        $paymentReportRepository = $this->createMock(PaymentReportRepository::class);
+        $paymentReportRepository
+            ->expects($this->once())
+            ->method('fetchOrCreate')
+            ->with($timestamp)
+            ->willReturn($report);
+        $paymentReportRepository
+            ->expects($this->once())
+            ->method('save')
+            ->with($report);
+
+        /** @var EventRepository $eventRepository */
+        /** @var PaymentReportRepository $paymentReportRepository */
+        $command = new EventUpdateCommand($eventRepository, $paymentReportRepository, new NullLogger());
+        $this->assertEquals(100, $command->execute($dto));
+        $this->assertEquals([[12, 32]], $report->getTypedIntervals($dto->getEvents()->getType()));
+    }
+
+    public function testExecuteCrossCommand()
+    {
+        $timestamp = (int)floor(time() / 3600) * 3600 - 7200;
+        $report = new PaymentReport($timestamp, PaymentReportStatus::createIncomplete());
+
+        $v
