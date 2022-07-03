@@ -94,4 +94,23 @@ class EventUpdateCommandTest extends TestCase
             ->withConsecutive([$viewDto->getEvents()], [$viewDto2->getEvents()], [$clickDto->getEvents()])
             ->willReturn(100, 200, 300);
 
-        $paymentReportRepository = $
+        $paymentReportRepository = $this->createMock(PaymentReportRepository::class);
+        $paymentReportRepository
+            ->expects($this->exactly(3))
+            ->method('fetchOrCreate')
+            ->with($timestamp)
+            ->willReturn($report);
+        $paymentReportRepository
+            ->expects($this->exactly(3))
+            ->method('save')
+            ->with($report);
+
+        /** @var EventRepository $eventRepository */
+        /** @var PaymentReportRepository $paymentReportRepository */
+        $command = new EventUpdateCommand($eventRepository, $paymentReportRepository, new NullLogger());
+        $this->assertEquals(100, $command->execute($viewDto));
+        $this->assertEquals([[12, 32]], $report->getTypedIntervals(EventType::createView()));
+        $this->assertEmpty($report->getTypedIntervals(EventType::createClick()));
+        $this->assertEmpty($report->getTypedIntervals(EventType::createConversion()));
+
+       
