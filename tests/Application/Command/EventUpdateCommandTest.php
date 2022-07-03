@@ -63,4 +63,35 @@ class EventUpdateCommandTest extends TestCase
         $timestamp = (int)floor(time() / 3600) * 3600 - 7200;
         $report = new PaymentReport($timestamp, PaymentReportStatus::createIncomplete());
 
-        $v
+        $viewDto = new ViewEventUpdateDTO(
+            [
+                'time_start' => $timestamp + 12,
+                'time_end' => $timestamp + 32,
+                'events' => [],
+            ]
+        );
+
+        $viewDto2 = new ViewEventUpdateDTO(
+            [
+                'time_start' => $timestamp + 2000,
+                'time_end' => $timestamp + 2055,
+                'events' => [],
+            ]
+        );
+
+        $clickDto = new ClickEventUpdateDTO(
+            [
+                'time_start' => $timestamp + 30,
+                'time_end' => $timestamp + 31,
+                'events' => [],
+            ]
+        );
+
+        $eventRepository = $this->createMock(EventRepository::class);
+        $eventRepository
+            ->expects($this->exactly(3))
+            ->method('saveAll')
+            ->withConsecutive([$viewDto->getEvents()], [$viewDto2->getEvents()], [$clickDto->getEvents()])
+            ->willReturn(100, 200, 300);
+
+        $paymentReportRepository = $
