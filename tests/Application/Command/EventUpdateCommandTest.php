@@ -113,4 +113,17 @@ class EventUpdateCommandTest extends TestCase
         $this->assertEmpty($report->getTypedIntervals(EventType::createClick()));
         $this->assertEmpty($report->getTypedIntervals(EventType::createConversion()));
 
-       
+        $command = new EventUpdateCommand($eventRepository, $paymentReportRepository, new NullLogger());
+        $this->assertEquals(200, $command->execute($viewDto2));
+        $this->assertEquals([[12, 32], [2000, 2055]], $report->getTypedIntervals(EventType::createView()));
+        $this->assertEmpty($report->getTypedIntervals(EventType::createClick()));
+        $this->assertEmpty($report->getTypedIntervals(EventType::createConversion()));
+
+        $command = new EventUpdateCommand($eventRepository, $paymentReportRepository, new NullLogger());
+        $this->assertEquals(300, $command->execute($clickDto));
+        $this->assertEquals([[12, 32], [2000, 2055]], $report->getTypedIntervals(EventType::createView()));
+        $this->assertEquals([[30, 31]], $report->getTypedIntervals(EventType::createClick()));
+        $this->assertEmpty($report->getTypedIntervals(EventType::createConversion()));
+    }
+
+    public function testExecuteWi
