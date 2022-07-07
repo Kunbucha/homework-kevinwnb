@@ -126,4 +126,28 @@ class EventUpdateCommandTest extends TestCase
         $this->assertEmpty($report->getTypedIntervals(EventType::createConversion()));
     }
 
-    public function testExecuteWi
+    public function testExecuteWideCommand()
+    {
+        $timestamp = (int)floor(time() / 3600) * 3600 - 14400;
+
+        $report1 = new PaymentReport($timestamp, PaymentReportStatus::createIncomplete());
+        $report2 = new PaymentReport($timestamp, PaymentReportStatus::createIncomplete());
+        $report3 = new PaymentReport($timestamp, PaymentReportStatus::createIncomplete());
+        $report4 = new PaymentReport($timestamp, PaymentReportStatus::createIncomplete());
+
+        $dto = new ClickEventUpdateDTO(
+            [
+                'time_start' => $timestamp - 1,
+                'time_end' => $timestamp + 7250,
+                'events' => [],
+            ]
+        );
+
+        $eventRepository = $this->createMock(EventRepository::class);
+        $eventRepository
+            ->expects($this->once())
+            ->method('saveAll')
+            ->with($dto->getEvents())
+            ->willReturn(300);
+
+        $paymentRepor
