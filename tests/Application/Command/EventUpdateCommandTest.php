@@ -150,4 +150,20 @@ class EventUpdateCommandTest extends TestCase
             ->with($dto->getEvents())
             ->willReturn(300);
 
-        $paymentRepor
+        $paymentReportRepository = $this->createMock(PaymentReportRepository::class);
+        $paymentReportRepository
+            ->expects($this->exactly(4))
+            ->method('fetchOrCreate')
+            ->withConsecutive([$timestamp - 3600], [$timestamp], [$timestamp + 3600], [$timestamp + 7200])
+            ->willReturn($report1, $report2, $report3, $report4);
+
+        $paymentReportRepository
+            ->expects($this->exactly(4))
+            ->method('save')
+            ->withConsecutive([$report1], [$report2], [$report3], [$report4]);
+
+        /** @var EventRepository $eventRepository */
+        /** @var PaymentReportRepository $paymentReportRepository */
+        $command = new EventUpdateCommand($eventRepository, $paymentReportRepository, new NullLogger());
+        $this->assertEquals(300, $command->execute($dto));
+        $this->assertEquals([[3599, 3599]], $report1->getTypedIntervals($dto
