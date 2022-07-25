@@ -166,4 +166,20 @@ class EventUpdateCommandTest extends TestCase
         /** @var PaymentReportRepository $paymentReportRepository */
         $command = new EventUpdateCommand($eventRepository, $paymentReportRepository, new NullLogger());
         $this->assertEquals(300, $command->execute($dto));
-        $this->assertEquals([[3599, 3599]], $report1->getTypedIntervals($dto
+        $this->assertEquals([[3599, 3599]], $report1->getTypedIntervals($dto->getEvents()->getType()));
+        $this->assertEquals([[0, 3599]], $report2->getTypedIntervals($dto->getEvents()->getType()));
+        $this->assertEquals([[0, 3599]], $report3->getTypedIntervals($dto->getEvents()->getType()));
+        $this->assertEquals([[0, 50]], $report4->getTypedIntervals($dto->getEvents()->getType()));
+    }
+
+    public function testInvalidData()
+    {
+        $this->expectException(ValidationException::class);
+
+        $eventRepository = $this->createMock(EventRepository::class);
+        $eventRepository->method('saveAll')->willThrowException(new InvalidDataException());
+        $paymentReportRepository = $this->createMock(PaymentReportRepository::class);
+
+        /** @var EventRepository $eventRepository */
+        /** @var PaymentReportRepository $paymentReportRepository */
+        $command = new EventUpdateCommand($eventRepository, $paymentReportRepository, new NullLog
