@@ -182,4 +182,18 @@ class EventUpdateCommandTest extends TestCase
 
         /** @var EventRepository $eventRepository */
         /** @var PaymentReportRepository $paymentReportRepository */
-        $command = new EventUpdateCommand($eventRepository, $paymentReportRepository, new NullLog
+        $command = new EventUpdateCommand($eventRepository, $paymentReportRepository, new NullLogger());
+
+        $timestamp = (int)floor(time() / 3600) * 3600 - 7200;
+
+        $dto = new ViewEventUpdateDTO(
+            [
+                'time_start' => $timestamp + 12,
+                'time_end' => $timestamp + 22,
+                'events' => [],
+            ]
+        );
+
+        $command->execute($dto);
+    }
+}
