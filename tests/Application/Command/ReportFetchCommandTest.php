@@ -34,4 +34,19 @@ class ReportFetchCommandTest extends TestCase
     {
         $repository = $this->createMock(PaymentReportRepository::class);
         $repository->expects($this->once())
-            ->method('
+            ->method('fetchAll')
+            ->willReturn(
+                new PaymentReportCollection(self::paymentReport(100), self::paymentReport(101))
+            );
+
+        /** @var PaymentReportRepository $repository */
+        $command = new ReportFetchCommand($repository, new NullLogger());
+
+        $this->assertEquals([100, 101], $command->execute()->getReportIds());
+    }
+
+    private static function paymentReport(int $id): PaymentReport
+    {
+        return new PaymentReport($id, new PaymentReportStatus());
+    }
+}
