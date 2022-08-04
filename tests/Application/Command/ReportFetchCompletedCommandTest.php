@@ -37,4 +37,11 @@ class ReportFetchCompletedCommandTest extends TestCase
             );
 
         /** @var PaymentReportRepository $repository */
-        return new ReportFetc
+        return new ReportFetchCompletedCommand($repository, new NullLogger());
+    }
+
+    private static function paymentReport(int $id): PaymentReport
+    {
+        return new PaymentReport($id, new PaymentReportStatus());
+    }
+}
