@@ -58,4 +58,27 @@ final class BidStrategyUpdateDTOTest extends TestCase
         $dto = new BidStrategyUpdateDTO(['bid_strategies' => [$input]]);
 
         /* @var $bidStrategy BidStrategy */
-        $bidStrategy = $dt
+        $bidStrategy = $dto->getBidStrategies()->first();
+
+        $this->assertEquals($input['id'], $bidStrategy->getId());
+        $this->assertEquals($input['details'][0]['category'], $bidStrategy->getCategory());
+        $this->assertEquals($input['details'][0]['rank'], $bidStrategy->getRank());
+    }
+
+    public function validBidStrategiesDataProvider(): array
+    {
+        return [
+            [[], 0],
+            [[self::simpleBidStrategy()]],
+            [[self::simpleBidStrategy(), self::simpleBidStrategy()], 2],
+            [
+                [
+                    self::simpleBidStrategy(
+                        [
+                            'details' => [
+                                self::simpleBidStrategyDetail(),
+                                self::simpleBidStrategyDetail(
+                                    [
+                                        'category' => 'user:country:in',
+                                        'rank' => 0.9,
+     
