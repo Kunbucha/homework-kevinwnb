@@ -25,4 +25,37 @@ final class BidStrategyUpdateDTOTest extends TestCase
         new BidStrategyUpdateDTO(['invalid' => []]);
     }
 
-    public function testInvalidBidStrategie
+    public function testInvalidBidStrategiesInputData(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        new BidStrategyUpdateDTO(['bid_strategies' => 'invalid']);
+    }
+
+    /**
+     * @dataProvider validBidStrategiesDataProvider
+     */
+    public function testValidBidStrategyData(array $data, int $count = 1): void
+    {
+        $dto = new BidStrategyUpdateDTO(['bid_strategies' => $data]);
+
+        $this->assertCount($count, $dto->getBidStrategies());
+    }
+
+    /**
+     * @dataProvider invalidBidStrategiesDataProvider
+     */
+    public function testInvalidBidStrategyData(array $data): void
+    {
+        $this->expectException(ValidationException::class);
+
+        new BidStrategyUpdateDTO(['bid_strategies' => $data]);
+    }
+
+    public function testModel(): void
+    {
+        $input = self::simpleBidStrategy();
+        $dto = new BidStrategyUpdateDTO(['bid_strategies' => [$input]]);
+
+        /* @var $bidStrategy BidStrategy */
+        $bidStrategy = $dt
