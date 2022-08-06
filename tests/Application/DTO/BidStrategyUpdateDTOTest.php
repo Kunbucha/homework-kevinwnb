@@ -110,3 +110,27 @@ final class BidStrategyUpdateDTOTest extends TestCase
                     self::simpleBidStrategy(
                         [
                             'details' => [
+                                self::simpleBidStrategyDetail(
+                                    [
+                                        'category' => 'user:country:in',
+                                        'rank' => 1.5,
+                                    ]
+                                ),
+                            ],
+                        ]
+                    ),
+                ]
+            ],
+        ];
+    }
+
+    public function invalidBidStrategiesDataProvider(): array
+    {
+        return [
+            [[self::simpleBidStrategy([], 'id')]],
+            [[self::simpleBidStrategy(['id' => null])]],
+            [[self::simpleBidStrategy(['id' => 0])]],
+            [[self::simpleBidStrategy(['id' => 'invalid_value'])]],
+            [[self::simpleBidStrategy([], 'details')]],
+            [[self::simpleBidStrategy(['details' => null])]],
+            [[self::simpleBidStrategy(
