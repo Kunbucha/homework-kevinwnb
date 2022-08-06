@@ -81,4 +81,32 @@ final class BidStrategyUpdateDTOTest extends TestCase
                                     [
                                         'category' => 'user:country:in',
                                         'rank' => 0.9,
-     
+                                    ]
+                                ),
+                            ],
+                        ]
+                    ),
+                ],
+                2
+            ],
+            [
+                [
+                    self::simpleBidStrategy(
+                        [
+                            'details' => [
+                                self::simpleBidStrategyDetail(
+                                    [
+                                        'category' => 'user:country:in',
+                                        'rank' => 0,
+                                    ]
+                                ),
+                            ],
+                        ]
+                    ),
+                ]
+            ],
+            [
+                [
+                    self::simpleBidStrategy(
+                        [
+                            'details' => [
