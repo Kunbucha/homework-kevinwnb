@@ -145,4 +145,40 @@ final class BidStrategyUpdateDTOTest extends TestCase
         ];
     }
 
-    private static function simpleBidStrategyDetail(array 
+    private static function simpleBidStrategyDetail(array $mergeData = [], string $remove = null): array
+    {
+        $bidStrategyDetail = array_merge(
+            [
+                'category' => 'user:country:us',
+                'rank' => 0.8,
+            ],
+            $mergeData
+        );
+
+        if ($remove !== null) {
+            unset($bidStrategyDetail[$remove]);
+        }
+
+        return $bidStrategyDetail;
+    }
+
+    private static function simpleBidStrategy(array $mergeData = [], string $remove = null): array
+    {
+        $bidStrategy = array_merge(
+            [
+                'id' => '43c567e1396b4cadb52223a51796fd01',
+                'name' => 'Test bid strategy',
+                'details' => [
+                    self::simpleBidStrategyDetail(),
+                ],
+            ],
+            $mergeData
+        );
+
+        if ($remove !== null) {
+            unset($bidStrategy[$remove]);
+        }
+
+        return $bidStrategy;
+    }
+}
