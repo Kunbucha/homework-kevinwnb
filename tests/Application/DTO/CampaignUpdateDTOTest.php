@@ -69,4 +69,44 @@ final class CampaignUpdateDTOTest extends TestCase
      */
     public function testInvalidBannersData($data): void
     {
-        $this->expectException(ValidationException::class
+        $this->expectException(ValidationException::class);
+
+        new CampaignUpdateDTO(
+            [
+                'campaigns' => [
+                    self::simpleCampaign(['banners' => $data]),
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @dataProvider validFiltersDataProvider
+     */
+    public function testValidFiltersData($data): void
+    {
+        $dto = new CampaignUpdateDTO(
+            [
+                'campaigns' => [
+                    self::simpleCampaign(['filters' => $data]),
+                ],
+            ]
+        );
+
+        $this->assertCount(1, $dto->getCampaigns());
+    }
+
+    /**
+     * @dataProvider invalidFiltersDataProvider
+     */
+    public function testInvalidFiltersData($data): void
+    {
+        $this->expectException(ValidationException::class);
+
+        new CampaignUpdateDTO(
+            [
+                'campaigns' => [
+                    self::simpleCampaign(['filters' => $data]),
+                ],
+            ]
+  
