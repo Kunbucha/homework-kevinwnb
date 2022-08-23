@@ -109,4 +109,41 @@ final class CampaignUpdateDTOTest extends TestCase
                     self::simpleCampaign(['filters' => $data]),
                 ],
             ]
-  
+        );
+    }
+
+    /**
+     * @dataProvider validConversionsDataProvider
+     */
+    public function testValidConversionsData($data, int $count = 1): void
+    {
+        $dto = new CampaignUpdateDTO(
+            [
+                'campaigns' => [
+                    self::simpleCampaign(['conversions' => $data]),
+                ],
+            ]
+        );
+
+        $this->assertCount($count, $dto->getCampaigns()->first()->getConversions());
+    }
+
+    /**
+     * @dataProvider invalidConversionsDataProvider
+     */
+    public function testInvalidConversionsData($data): void
+    {
+        $this->expectException(ValidationException::class);
+
+        new CampaignUpdateDTO(
+            [
+                'campaigns' => [
+                    self::simpleCampaign(['conversions' => $data]),
+                ],
+            ]
+        );
+    }
+
+    public function testModel(): void
+    {
+        $bannersI
