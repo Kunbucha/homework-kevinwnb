@@ -169,4 +169,17 @@ final class CampaignUpdateDTOTest extends TestCase
         /* @var $conversion Conversion */
         $conversion = $campaign->getConversions()->first();
 
-        $this->assertEquals($in
+        $this->assertEquals($input['id'], $campaign->getId());
+        $this->assertEquals($input['advertiser_id'], $campaign->getAdvertiserId());
+        $this->assertEquals($input['time_start'], $campaign->getTimeStart()->getTimestamp());
+        $this->assertEquals($input['time_end'], $campaign->getTimeEnd()->getTimestamp());
+        $this->assertEquals($input['budget'], $campaign->getBudgetValue());
+        $this->assertEquals($input['max_cpm'], $campaign->getMaxCpm());
+        $this->assertEquals($input['max_cpc'], $campaign->getMaxCpc());
+        $this->assertEquals($input['filters'], $campaign->getFilters());
+        $this->assertTrue($campaign->isMetaverse());
+
+        $this->assertEquals($input['id'], $banner->getCampaignId());
+        $this->assertEquals($bannersInput['id'], $banner->getId());
+        $this->assertEquals($bannersInput['size'], $banner->getSize());
+        $this->assertEquals($bannersInput
