@@ -146,4 +146,27 @@ final class CampaignUpdateDTOTest extends TestCase
 
     public function testModel(): void
     {
-        $bannersI
+        $bannersInput = self::simpleBanner();
+        $conversionInput = self::simpleConversion();
+
+        $input = self::simpleCampaign(
+            [
+                'time_end' => (new DateTime())->getTimestamp() + 200,
+                'max_cpm' => 100,
+                'max_cpc' => 200,
+                'banners' => [$bannersInput],
+                'filters' => ['require' => ['a'], 'exclude' => ['b']],
+                'conversions' => [$conversionInput],
+                'medium' => 'metaverse',
+            ]
+        );
+        $dto = new CampaignUpdateDTO(['campaigns' => [$input]]);
+
+        /* @var $campaign Campaign */
+        $campaign = $dto->getCampaigns()->first();
+        /* @var $banner Banner */
+        $banner = $campaign->getBanners()->first();
+        /* @var $conversion Conversion */
+        $conversion = $campaign->getConversions()->first();
+
+        $this->assertEquals($in
