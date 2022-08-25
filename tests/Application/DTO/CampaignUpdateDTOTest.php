@@ -206,4 +206,23 @@ final class CampaignUpdateDTOTest extends TestCase
             [[], 0],
             [[self::simpleCampaign()]],
             [[self::simpleCampaign(), self::simpleCampaign()], 2],
-            [[sel
+            [[self::simpleCampaign(['time_end' => null])]],
+            [[self::simpleCampaign(['time_end' => (new DateTime())->getTimestamp()])]],
+            [[self::simpleCampaign(['time_end' => (new DateTime())->getTimestamp() + 100])]],
+            [[self::simpleCampaign(['max_cpm' => null])]],
+            [[self::simpleCampaign(['max_cpm' => 0])]],
+            [[self::simpleCampaign(['max_cpm' => 200])]],
+            [[self::simpleCampaign(['max_cpc' => null])]],
+            [[self::simpleCampaign(['max_cpc' => 0])]],
+            [[self::simpleCampaign(['max_cpc' => 100])]],
+            [[self::simpleCampaign(['medium' => 'metaverse'])]],
+            [[self::simpleCampaign([], 'medium')]],
+            [[self::simpleCampaign(['vendor' => 'dummy'])]],
+            [[self::simpleCampaign(['medium' => 'metaverse', 'vendor' => 'dummy'])]],
+        ];
+    }
+
+    public function invalidCampaignsDataProvider(): array
+    {
+        return [
+            [[
