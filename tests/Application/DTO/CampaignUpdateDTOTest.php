@@ -182,4 +182,28 @@ final class CampaignUpdateDTOTest extends TestCase
         $this->assertEquals($input['id'], $banner->getCampaignId());
         $this->assertEquals($bannersInput['id'], $banner->getId());
         $this->assertEquals($bannersInput['size'], $banner->getSize());
-        $this->assertEquals($bannersInput
+        $this->assertEquals($bannersInput['type'], $banner->getType());
+
+        $this->assertEquals($input['id'], $conversion->getCampaignId());
+        $this->assertEquals($conversionInput['id'], $conversion->getId());
+        $this->assertEquals($conversionInput['limit_type'], $conversion->getLimitType());
+        $this->assertEquals($conversionInput['is_repeatable'], $conversion->isRepeatable());
+    }
+
+    public function testDefaultMedium(): void
+    {
+        $input = self::simpleCampaign([], 'medium');
+        $dto = new CampaignUpdateDTO(['campaigns' => [$input]]);
+
+        /* @var $campaign Campaign */
+        $campaign = $dto->getCampaigns()->first();
+        $this->assertTrue($campaign->isWeb());
+    }
+
+    public function validCampaignsDataProvider(): array
+    {
+        return [
+            [[], 0],
+            [[self::simpleCampaign()]],
+            [[self::simpleCampaign(), self::simpleCampaign()], 2],
+            [[sel
