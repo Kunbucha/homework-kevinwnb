@@ -225,4 +225,19 @@ final class CampaignUpdateDTOTest extends TestCase
     public function invalidCampaignsDataProvider(): array
     {
         return [
-            [[
+            [[self::simpleCampaign([], 'id')]],
+            [[self::simpleCampaign(['id' => null])]],
+            [[self::simpleCampaign(['id' => 0])]],
+            [[self::simpleCampaign(['id' => 'invalid_value'])]],
+            [[self::simpleCampaign([], 'advertiser_id')]],
+            [[self::simpleCampaign(['advertiser_id' => null])]],
+            [[self::simpleCampaign(['advertiser_id' => 0])]],
+            [[self::simpleCampaign(['advertiser_id' => 'invalid_value'])]],
+            [[self::simpleCampaign([], 'time_start')]],
+            [[self::simpleCampaign(['time_start' => null])]],
+            [[self::simpleCampaign(['time_start' => 'invalid_value'])]],
+            [[self::simpleCampaign(['time_end' => 'invalid_value'])]],
+            [[self::simpleCampaign([], 'budget')]],
+            [[self::simpleCampaign(['budget' => null])]],
+            [[self::simpleCampaign(['budget' => 0])]],
+            [[self::
