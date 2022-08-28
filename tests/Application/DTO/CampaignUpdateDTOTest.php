@@ -240,4 +240,30 @@ final class CampaignUpdateDTOTest extends TestCase
             [[self::simpleCampaign([], 'budget')]],
             [[self::simpleCampaign(['budget' => null])]],
             [[self::simpleCampaign(['budget' => 0])]],
-            [[self::
+            [[self::simpleCampaign(['budget' => 'invalid_value'])]],
+            [[self::simpleCampaign(['max_cpm' => 'invalid_value'])]],
+            [[self::simpleCampaign(['max_cpc' => 'invalid_value'])]],
+            [[self::simpleCampaign([], 'banners')]],
+            [[self::simpleCampaign([], 'bid_strategy_id')]],
+            [[self::simpleCampaign(['medium' => 'dummy'])]],
+        ];
+    }
+
+    public function validBannersDataProvider(): array
+    {
+        return [
+            [[], 0],
+            [[self::simpleBanner()]],
+            [[self::simpleBanner(), self::simpleBanner()], 2],
+        ];
+    }
+
+    public function invalidBannersDataProvider(): array
+    {
+        return [
+            [null],
+            ['invalid_value'],
+            [[self::simpleBanner([], 'id')]],
+            [[self::simpleBanner(['id' => null])]],
+            [[self::simpleBanner(['id' => 0])]],
+           
