@@ -266,4 +266,33 @@ final class CampaignUpdateDTOTest extends TestCase
             [[self::simpleBanner([], 'id')]],
             [[self::simpleBanner(['id' => null])]],
             [[self::simpleBanner(['id' => 0])]],
-           
+            [[self::simpleBanner(['id' => 'invalid_value'])]],
+            [[self::simpleBanner([], 'size')]],
+            [[self::simpleBanner(['size' => null])]],
+            [[self::simpleBanner(['size' => 0])]],
+            [[self::simpleBanner(['size' => ''])]],
+            [[self::simpleBanner([], 'type')]],
+            [[self::simpleBanner(['type' => null])]],
+            [[self::simpleBanner(['type' => 0])]],
+            [[self::simpleBanner(['type' => 'invalid_value'])]],
+        ];
+    }
+
+    public function validFiltersDataProvider(): array
+    {
+        return [
+            [null],
+            [[]],
+            [['require' => null]],
+            [['require' => []]],
+            [['exclude' => null]],
+            [['exclude' => []]],
+            [['require' => null, 'exclude' => null]],
+            [['require' => [], 'exclude' => []]],
+        ];
+    }
+
+    public function invalidFiltersDataProvider(): array
+    {
+        return [
+            ['invalid_value'],
