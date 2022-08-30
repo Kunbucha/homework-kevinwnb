@@ -296,3 +296,31 @@ final class CampaignUpdateDTOTest extends TestCase
     {
         return [
             ['invalid_value'],
+            [['require' => 'invalid_value']],
+            [['exclude' => 'invalid_value']],
+        ];
+    }
+
+    public function validConversionsDataProvider(): array
+    {
+        return [
+            [null, 0],
+            [[], 0],
+            [[self::simpleConversion()]],
+            [[self::simpleConversion(), self::simpleConversion()], 2],
+        ];
+    }
+
+    public function invalidConversionsDataProvider(): array
+    {
+        return [
+            ['invalid_value'],
+            [[self::simpleConversion([], 'id')]],
+            [[self::simpleConversion(['id' => null])]],
+            [[self::simpleConversion(['id' => 0])]],
+            [[self::simpleConversion(['id' => 'invalid_value'])]],
+
+            [[self::simpleConversion([], 'limit_type')]],
+            [[self::simpleConversion(['limit_type' => null])]],
+            [[self::simpleConversion(['limit_type' => 0])]],
+            [[self::simpleConversion(['limit_ty
