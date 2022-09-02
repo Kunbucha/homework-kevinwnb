@@ -323,4 +323,34 @@ final class CampaignUpdateDTOTest extends TestCase
             [[self::simpleConversion([], 'limit_type')]],
             [[self::simpleConversion(['limit_type' => null])]],
             [[self::simpleConversion(['limit_type' => 0])]],
-            [[self::simpleConversion(['limit_ty
+            [[self::simpleConversion(['limit_type' => 'invalid_value'])]],
+
+            [[self::simpleConversion([], 'is_repeatable')]],
+            [[self::simpleConversion(['is_repeatable' => null])]],
+            [[self::simpleConversion(['is_repeatable' => 4])]],
+            [[self::simpleConversion(['is_repeatable' => 'invalid_value'])]],
+        ];
+    }
+
+    private static function simpleBanner(array $mergeData = [], string $remove = null): array
+    {
+        $banner = array_merge(
+            [
+                'id' => '43c567e1396b4cadb52223a51796fd01',
+                'size' => '220x345',
+                'type' => 'image',
+            ],
+            $mergeData
+        );
+
+        if ($remove !== null) {
+            unset($banner[$remove]);
+        }
+
+        return $banner;
+    }
+
+    private static function simpleConversion(array $mergeData = [], string $remove = null): array
+    {
+        $conversion = array_merge(
+         
