@@ -353,4 +353,34 @@ final class CampaignUpdateDTOTest extends TestCase
     private static function simpleConversion(array $mergeData = [], string $remove = null): array
     {
         $conversion = array_merge(
-         
+            [
+                'id' => '249befbe667e49a7a5c93dfb9b21935c',
+                'limit_type' => 'in_budget',
+                'is_repeatable' => false
+            ],
+            $mergeData
+        );
+
+        if ($remove !== null) {
+            unset($conversion[$remove]);
+        }
+
+        return $conversion;
+    }
+
+    private static function simpleCampaign(array $mergeData = [], string $remove = null): array
+    {
+        $campaign = array_merge(
+            [
+                'id' => '43c567e1396b4cadb52223a51796fd01',
+                'advertiser_id' => 'fff567e1396b4cadb52223a51796fd02',
+                'medium' => 'web',
+                'time_start' => (new DateTime())->getTimestamp(),
+                'budget' => 10000,
+                'banners' => [self::simpleBanner()],
+                'bid_strategy_id' => 'fff567e1396b4cadb52223a51796fd02',
+            ],
+            $mergeData
+        );
+
+   
