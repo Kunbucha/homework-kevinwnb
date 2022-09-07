@@ -383,4 +383,10 @@ final class CampaignUpdateDTOTest extends TestCase
             $mergeData
         );
 
-   
+        if ($remove !== null) {
+            unset($campaign[$remove]);
+        }
+
+        return $campaign;
+    }
+}
