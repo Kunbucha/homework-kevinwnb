@@ -66,4 +66,21 @@ final class ConversionEventUpdateDTOTest extends EventUpdateDTOTest
             [[static::simpleEvent([], 'group_id')]],
             [[static::simpleEvent(['group_id' => null])]],
             [[static::simpleEvent(['group_id' => 0])]],
-            [[static::simpleEvent(['group_id' => '
+            [[static::simpleEvent(['group_id' => 'invalid_value'])]],
+            [[static::simpleEvent([], 'conversion_id')]],
+            [[static::simpleEvent(['conversion_id' => null])]],
+            [[static::simpleEvent(['conversion_id' => 0])]],
+            [[static::simpleEvent(['conversion_id' => 'invalid_value'])]],
+            [[static::simpleEvent([], 'conversion_value')]],
+            [[static::simpleEvent(['conversion_value' => null])]],
+            [[static::simpleEvent(['conversion_value' => -100])]],
+            [[static::simpleEvent(['conversion_value' => 'invalid_value'])]],
+            [[static::simpleEvent(['payment_status' => -1])]],
+            [[static::simpleEvent(['payment_status' => 'invalid_value'])]],
+        ];
+    }
+
+    protected static function simpleEvent(array $mergeData = [], string $remove = null): array
+    {
+        $event = array_merge(
+            par
