@@ -38,4 +38,32 @@ final class ConversionEventUpdateDTOTest extends EventUpdateDTOTest
     {
         return array_merge(
             parent::validDataProvider(),
-    
+            static::validConversionDataProvider()
+        );
+    }
+
+    public static function invalidDataProvider(): array
+    {
+        return array_merge(
+            parent::invalidDataProvider(),
+            static::invalidConversionDataProvider()
+        );
+    }
+
+    protected static function validConversionDataProvider(): array
+    {
+        return [
+            [[static::simpleEvent(['conversion_value' => 0])]],
+            [[static::simpleEvent(['payment_status' => null])]],
+            [[static::simpleEvent(['payment_status' => 0])]],
+            [[static::simpleEvent(['payment_status' => 1])]],
+        ];
+    }
+
+    protected static function invalidConversionDataProvider(): array
+    {
+        return [
+            [[static::simpleEvent([], 'group_id')]],
+            [[static::simpleEvent(['group_id' => null])]],
+            [[static::simpleEvent(['group_id' => 0])]],
+            [[static::simpleEvent(['group_id' => '
