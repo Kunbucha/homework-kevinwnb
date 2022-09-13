@@ -20,4 +20,40 @@ abstract class EventUpdateDTOTest extends TestCase
     {
         $this->expectException(ValidationException::class);
 
-      
+        $this->createDTO([]);
+    }
+
+    public function testInvalidInputData(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $this->createDTO(['invalid' => []]);
+    }
+
+    public function testNoEventsInputData(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $this->createDTO(
+            [
+                'time_start' => time() - 10,
+                'time_end' => time() - 1,
+            ]
+        );
+    }
+
+    public function testValidTimespanData(): void
+    {
+        $time_start = time() - 10;
+        $time_end = time() - 1;
+
+        $dto = $this->createDTO(
+            [
+                'time_start' => $time_start,
+                'time_end' => $time_end,
+                'events' => [],
+            ]
+        );
+
+        $this->assertEquals($time_start, $dto->getEvents()->getTimeStart()->getTimestamp());
+    
