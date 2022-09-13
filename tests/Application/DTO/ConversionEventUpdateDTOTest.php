@@ -83,4 +83,17 @@ final class ConversionEventUpdateDTOTest extends EventUpdateDTOTest
     protected static function simpleEvent(array $mergeData = [], string $remove = null): array
     {
         $event = array_merge(
-            par
+            parent::simpleEvent(),
+            ['group_id' => '66c567e1396b4cadb52223a51796fd01'],
+            ['conversion_id' => '43c567e1396b4cadb52223a51796fd01'],
+            ['conversion_value' => 100],
+            $mergeData
+        );
+
+        if ($remove !== null) {
+            unset($event[$remove]);
+        }
+
+        return $event;
+    }
+}
