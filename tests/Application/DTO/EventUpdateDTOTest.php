@@ -56,4 +56,34 @@ abstract class EventUpdateDTOTest extends TestCase
         );
 
         $this->assertEquals($time_start, $dto->getEvents()->getTimeStart()->getTimestamp());
-    
+        $this->assertEquals($time_end, $dto->getEvents()->getTimeEnd()->getTimestamp());
+
+        $dto = $this->createDTO(
+            [
+                'time_start' => $time_start,
+                'time_end' => $time_start,
+                'events' => [],
+            ]
+        );
+
+        $this->assertEquals($time_start, $dto->getEvents()->getTimeStart()->getTimestamp());
+        $this->assertEquals($time_start, $dto->getEvents()->getTimeEnd()->getTimestamp());
+    }
+
+    /**
+     * @dataProvider invalidTimespanDataProvider
+     */
+    public function testInvalidTimespanData($data): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $this->createDTO(array_merge(['events' => []], $data));
+    }
+
+    public function testEventTimeOutOfRangeLeft(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $this->createDTO(
+            [
+               
