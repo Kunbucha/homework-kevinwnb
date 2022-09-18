@@ -123,4 +123,34 @@ abstract class EventUpdateDTOTest extends TestCase
             ]
         );
 
-        $this->assertCou
+        $this->assertCount($count, $dto->getEvents());
+    }
+
+    /**
+     * @dataProvider invalidDataProvider
+     */
+    public function testInvalidData(array $data): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $this->createDTO(
+            [
+                'time_start' => time() - 500,
+                'time_end' => time() - 1,
+                'events' => $data,
+            ]
+        );
+    }
+
+    public function testModel(): void
+    {
+        $input = static::simpleEvent(
+            ['zone_id' => 'aac567e1396b4cadb52223a51796fdbb', 'context' => ['a' => 1]]
+        );
+        $dto = $this->createDTO(['time_start' => time() - 500, 'time_end' => time() - 1, 'events' => [$input],]);
+
+        /* @var $event Event */
+        $event = $dto->getEvents()->first();
+
+        $this->assertEquals($this->getEventType()->toString(), $event->getType()->toString());
+        $this->assertEquals($input['id
