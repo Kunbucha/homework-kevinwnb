@@ -86,4 +86,41 @@ abstract class EventUpdateDTOTest extends TestCase
 
         $this->createDTO(
             [
-               
+                'time_start' => time() - 10,
+                'time_end' => time() - 1,
+                'events' => [
+                    static::simpleEvent(['time' => time() - 15]),
+                ],
+            ]
+        );
+    }
+
+    public function testEventTimeOutOfRangeRight(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $this->createDTO(
+            [
+                'time_start' => time() - 10,
+                'time_end' => time() - 5,
+                'events' => [
+                    static::simpleEvent(['time' => time() - 1]),
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @dataProvider validDataProvider
+     */
+    public function testValidData(array $data, int $count = 1): void
+    {
+        $dto = $this->createDTO(
+            [
+                'time_start' => time() - 500,
+                'time_end' => time() - 1,
+                'events' => $data,
+            ]
+        );
+
+        $this->assertCou
