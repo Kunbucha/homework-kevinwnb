@@ -153,4 +153,17 @@ abstract class EventUpdateDTOTest extends TestCase
         $event = $dto->getEvents()->first();
 
         $this->assertEquals($this->getEventType()->toString(), $event->getType()->toString());
-        $this->assertEquals($input['id
+        $this->assertEquals($input['id'], $event->getId());
+        $this->assertEquals($input['time'], $event->getTime()->getTimestamp());
+        $this->assertEquals($input['case_id'], $event->getCaseId());
+        $this->assertEquals($input['case_time'], $event->getCaseTime()->getTimestamp());
+        $this->assertEquals($input['publisher_id'], $event->getPublisherId());
+        $this->assertEquals($input['zone_id'], $event->getZoneId());
+        $this->assertEquals($input['advertiser_id'], $event->getAdvertiserId());
+        $this->assertEquals($input['campaign_id'], $event->getCampaignId());
+        $this->assertEquals($input['banner_id'], $event->getBannerId());
+        $this->assertEquals($input['impression_id'], $event->getImpressionId());
+        $this->assertEquals($input['tracking_id'], $event->getTrackingId());
+        $this->assertEquals($input['user_id'], $event->getUserId());
+        $this->assertEquals($input['context'], $event->getContextData());
+        $this->assertEqual
