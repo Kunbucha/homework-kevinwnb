@@ -166,4 +166,30 @@ abstract class EventUpdateDTOTest extends TestCase
         $this->assertEquals($input['tracking_id'], $event->getTrackingId());
         $this->assertEquals($input['user_id'], $event->getUserId());
         $this->assertEquals($input['context'], $event->getContextData());
-        $this->assertEqual
+        $this->assertEquals($input['human_score'], $event->getHumanScore());
+    }
+
+    public static function invalidTimespanDataProvider(): array
+    {
+        return [
+            [[]],
+            [['time_start' => time() - 1]],
+            [['time_end' => time() - 1]],
+            [['time_start' => 'invalid', 'time_end' => time() - 1]],
+            [['time_start' => time() - 10, 'time_end' => 'invalid']],
+            [['time_start' => time() - 10, 'time_end' => time() - 15]],
+            [['time_start' => time() - 3000000, 'time_end' => time() - 1]],
+            [['time_start' => time() - 10, 'time_end' => time() + 100]],
+        ];
+    }
+
+    public static function validDataProvider(): array
+    {
+        return array_merge(
+            static::validEventsDataProvider(),
+            static::validCaseDataProvider(),
+            static::validImpressionDataProvider()
+        );
+    }
+
+    public static function inva
