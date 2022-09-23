@@ -192,4 +192,35 @@ abstract class EventUpdateDTOTest extends TestCase
         );
     }
 
-    public static function inva
+    public static function invalidDataProvider(): array
+    {
+        return array_merge(
+            static::invalidEventsDataProvider(),
+            static::invalidCaseDataProvider(),
+            static::invalidImpressionDataProvider()
+        );
+    }
+
+    protected static function validEventsDataProvider(): array
+    {
+        return [
+            [[], 0],
+            [[static::simpleEvent()]],
+            [[static::simpleEvent(), static::simpleEvent()], 2],
+        ];
+    }
+
+    protected static function validCaseDataProvider(): array
+    {
+        return [
+            [[static::simpleEvent(['zone_id' => null])]],
+            [[static::simpleEvent(['zone_id' => 'aac567e1396b4cadb52223a51796fdbb'])]],
+        ];
+    }
+
+    protected static function validImpressionDataProvider(): array
+    {
+        return [
+            [[static::simpleEvent(['keywords' => null])]],
+            [[static::simpleEvent(['keywords' => []])]],
+            [[static::simpl
