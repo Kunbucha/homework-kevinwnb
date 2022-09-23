@@ -223,4 +223,25 @@ abstract class EventUpdateDTOTest extends TestCase
         return [
             [[static::simpleEvent(['keywords' => null])]],
             [[static::simpleEvent(['keywords' => []])]],
-            [[static::simpl
+            [[static::simpleEvent(['keywords' => ['k' => 333]])]],
+            [[static::simpleEvent(['context' => null])]],
+            [[static::simpleEvent(['context' => []])]],
+            [[static::simpleEvent(['context' => ['a' => 123]])]],
+            [[static::simpleEvent(['page_rank' => 0.0])]],
+            [[static::simpleEvent(['page_rank' => 0.59])]],
+            [[static::simpleEvent(['page_rank' => 1.0])]],
+            [[static::simpleEvent(['page_rank' => -1.0])]],
+            [[static::simpleEvent(['page_rank' => -1])]],
+        ];
+    }
+
+    protected static function invalidEventsDataProvider(): array
+    {
+        return [
+            [[static::simpleEvent([], 'id')]],
+            [[static::simpleEvent(['id' => null])]],
+            [[static::simpleEvent(['id' => 0])]],
+            [[static::simpleEvent(['id' => 'invalid_value'])]],
+            [[static::simpleEvent([], 'time')]],
+            [[static::simpleEvent(['time' => null])]],
+            [
