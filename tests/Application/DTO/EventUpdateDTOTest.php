@@ -244,4 +244,23 @@ abstract class EventUpdateDTOTest extends TestCase
             [[static::simpleEvent(['id' => 'invalid_value'])]],
             [[static::simpleEvent([], 'time')]],
             [[static::simpleEvent(['time' => null])]],
-            [
+            [[static::simpleEvent(['time' => 0])]],
+            [[static::simpleEvent(['time' => 'invalid_value'])]],
+        ];
+    }
+
+    protected static function invalidCaseDataProvider(): array
+    {
+        return [
+            [[static::simpleEvent([], 'case_id')]],
+            [[static::simpleEvent(['case_id' => null])]],
+            [[static::simpleEvent(['case_id' => 0])]],
+            [[static::simpleEvent(['case_id' => 'invalid_value'])]],
+            [[static::simpleEvent(['case_time' => null])]],
+            [[static::simpleEvent(['case_time' => 0])]],
+            [[static::simpleEvent(['case_time' => 'invalid_value'])]],
+            [[static::simpleEvent(['case_time' => time()])]],
+            [[static::simpleEvent([], 'publisher_id')]],
+            [[static::simpleEvent(['publisher_id' => null])]],
+            [[static::simpleEvent(['publisher_id' => 0])]],
+            [[static::simpleEvent(['publisher_id' =>
