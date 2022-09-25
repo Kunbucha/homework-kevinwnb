@@ -282,4 +282,20 @@ abstract class EventUpdateDTOTest extends TestCase
     }
 
     protected static function invalidImpressionDataProvider(): array
-    
+    {
+        return [
+            [[static::simpleEvent([], 'impression_id')]],
+            [[static::simpleEvent(['impression_id' => null])]],
+            [[static::simpleEvent(['impression_id' => 0])]],
+            [[static::simpleEvent(['impression_id' => 'invalid_value'])]],
+            [[static::simpleEvent([], 'tracking_id')]],
+            [[static::simpleEvent(['tracking_id' => null])]],
+            [[static::simpleEvent(['tracking_id' => 0])]],
+            [[static::simpleEvent(['tracking_id' => 'invalid_value'])]],
+            [[static::simpleEvent([], 'user_id')]],
+            [[static::simpleEvent(['user_id' => null])]],
+            [[static::simpleEvent(['user_id' => 0])]],
+            [[static::simpleEvent(['user_id' => 'invalid_value'])]],
+            [[static::simpleEvent(['keywords' => 0])]],
+            [[static::simpleEvent(['keywords' => 'invalid_value'])]],
+            [[static::simpl
