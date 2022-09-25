@@ -298,4 +298,22 @@ abstract class EventUpdateDTOTest extends TestCase
             [[static::simpleEvent(['user_id' => 'invalid_value'])]],
             [[static::simpleEvent(['keywords' => 0])]],
             [[static::simpleEvent(['keywords' => 'invalid_value'])]],
-            [[static::simpl
+            [[static::simpleEvent(['context' => 0])]],
+            [[static::simpleEvent(['context' => 'invalid_value'])]],
+            [[static::simpleEvent([], 'page_rank')]],
+            [[static::simpleEvent(['page_rank' => null])]],
+            [[static::simpleEvent(['page_rank' => -2])]],
+            [[static::simpleEvent(['page_rank' => -0.1])]],
+            [[static::simpleEvent(['page_rank' => 100])]],
+            [[static::simpleEvent(['page_rank' => 'invalid_value'])]],
+            [[static::simpleEvent([], 'human_score')]],
+            [[static::simpleEvent(['human_score' => null])]],
+            [[static::simpleEvent(['human_score' => -1])]],
+            [[static::simpleEvent(['human_score' => 100])]],
+            [[static::simpleEvent(['human_score' => 'invalid_value'])]],
+        ];
+    }
+
+    protected static function simpleEvent(array $mergeData = [], string $remove = null): array
+    {
+        $event = array_merge(
