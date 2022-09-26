@@ -317,3 +317,28 @@ abstract class EventUpdateDTOTest extends TestCase
     protected static function simpleEvent(array $mergeData = [], string $remove = null): array
     {
         $event = array_merge(
+            [
+                'id' => '43c567e1396b4cadb52223a51796fd01',
+                'time' => time() - 30,
+                'case_id' => '43c567e1396b4cadb52223a51796fd01',
+                'case_time' => time() - 35,
+                'publisher_id' => 'ffc567e1396b4cadb52223a51796fd02',
+                'advertiser_id' => 'ccc567e1396b4cadb52223a51796fdcc',
+                'campaign_id' => 'ddc567e1396b4cadb52223a51796fddd',
+                'banner_id' => 'ddc567e1396b4cadb52223a51796fddd',
+                'impression_id' => '13c567e1396b4cadb52223a51796fd03',
+                'tracking_id' => '23c567e1396b4cadb52223a51796fd02',
+                'user_id' => '33c567e1396b4cadb52223a51796fd01',
+                'human_score' => 0.99,
+                'page_rank' => 1.0,
+            ],
+            $mergeData
+        );
+
+        if ($remove !== null) {
+            unset($event[$remove]);
+        }
+
+        return $event;
+    }
+}
