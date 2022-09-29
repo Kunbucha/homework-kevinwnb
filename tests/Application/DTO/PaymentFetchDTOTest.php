@@ -34,4 +34,28 @@ final class PaymentFetchDTOTest extends TestCase
                     'event_id' => 'aac567e1396b4cadb52223a51796fdb1',
                     'event_type' => 'view',
                     'status' => 1,
-  
+                    'value' => 10000,
+                ],
+                [
+                    'event_id' => 'aac567e1396b4cadb52223a51796fdb2',
+                    'event_type' => 'view',
+                    'status' => 1,
+                    'value' => 10000,
+                ],
+            ],
+            $dto->getPayments()
+        );
+    }
+
+    private static function payment(int $id): array
+    {
+        return [
+            'id' => $id,
+            'report_id' => 123,
+            'event_id' => 'aac567e1396b4cadb52223a51796fdb' . $id,
+            'event_type' => 'view',
+            'status' => 1,
+            'value' => 10000,
+        ];
+    }
+}
