@@ -30,4 +30,20 @@ final class BidStrategyTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         $bidStrategyId = '43c567e1396b4cadb52223a51796fd01';
-        $c
+        $category = str_repeat('x', 268);
+        $rank = 0.99;
+
+        new BidStrategy(new Id($bidStrategyId), $category, $rank);
+    }
+
+    public function testInvalidRank(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $bidStrategyId = '43c567e1396b4cadb52223a51796fd01';
+        $category = 'user:country:st';
+        $rank = -1;
+
+        new BidStrategy(new Id($bidStrategyId), $category, $rank);
+    }
+}
