@@ -63,4 +63,20 @@ final class ImpressionCaseTest extends TestCase
         $this->assertEquals($humanScore, $case->getHumanScore());
         $this->assertEquals($pageRank, $case->getPageRank());
         $this->assertEquals($keywords, $case->getKeywords());
-        $this->assertEquals($context, $ca
+        $this->assertEquals($context, $case->getContext()->getData());
+        $this->assertEquals($context, $case->getContextData());
+
+        $case = new ImpressionCase(
+            new Id($caseId),
+            DateTimeHelper::fromString($caseTime),
+            new Id($publisherId),
+            null,
+            new Id($advertiserId),
+            new Id($campaignId),
+            new Id($bannerId),
+            $impression
+        );
+
+        $this->assertNull($case->getZoneId());
+    }
+}
