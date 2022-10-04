@@ -49,4 +49,18 @@ final class ImpressionCaseTest extends TestCase
             $impression
         );
 
-        $this->assertI
+        $this->assertInstanceOf(ImpressionCase::class, $case);
+        $this->assertEquals($caseId, $case->getId());
+        $this->assertEquals($publisherId, $case->getPublisherId());
+        $this->assertEquals($zoneId, $case->getZoneId());
+        $this->assertEquals($advertiserId, $case->getAdvertiserId());
+        $this->assertEquals($campaignId, $case->getCampaignId());
+        $this->assertEquals($bannerId, $case->getBannerId());
+        $this->assertEquals($impression, $case->getImpression());
+        $this->assertEquals($impressionId, $case->getImpressionId());
+        $this->assertEquals($trackingId, $case->getTrackingId());
+        $this->assertEquals($userId, $case->getUserId());
+        $this->assertEquals($humanScore, $case->getHumanScore());
+        $this->assertEquals($pageRank, $case->getPageRank());
+        $this->assertEquals($keywords, $case->getKeywords());
+        $this->assertEquals($context, $ca
