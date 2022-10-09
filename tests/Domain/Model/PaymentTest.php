@@ -66,4 +66,10 @@ final class PaymentTest extends TestCase
 
         $payment = new Payment(
             EventType::createView(),
-       
+            new Id('43c567e1396b4cadb52223a51796fd01'),
+            new PaymentStatus(PaymentStatus::ACCEPTED)
+        );
+
+        $payment->getReportId();
+    }
+}
