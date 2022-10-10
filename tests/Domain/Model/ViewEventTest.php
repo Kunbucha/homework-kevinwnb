@@ -51,4 +51,21 @@ final class ViewEventTest extends TestCase
             new Id($publisherId),
             new Id($zoneId),
             new Id($advertiserId),
-          
+            new Id($campaignId),
+            new Id($bannerId),
+            $impression
+        );
+
+        $event = new ViewEvent(
+            new Id($eventId),
+            DateTimeHelper::fromString($time),
+            $case
+        );
+
+        $this->assertInstanceOf(ViewEvent::class, $event);
+        $this->assertEquals($eventId, $event->getId());
+        $this->assertEquals(EventType::VIEW, $event->getType());
+        $this->assertEquals($time, $event->getTime()->format(DateTimeInterface::ATOM));
+        $this->assertEquals($case, $event->getCase());
+    }
+}
