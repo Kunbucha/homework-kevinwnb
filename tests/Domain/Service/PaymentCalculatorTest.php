@@ -40,4 +40,30 @@ final class PaymentCalculatorTest extends TestCase
 
     private const CAMPAIGN_CPV = 100;
 
-    
+    private const CAMPAIGN_CPC = 1500000;
+
+    private const BANNER_ID = '70000000000000000000000000000001';
+
+    private const BANNER_SIZE = '100x200';
+
+    private const USER_ID = 'a0000000000000000000000000000001';
+
+    private const CONVERSION_GROUP_ID = 'b0000000000000000000000000000001';
+
+    private const CONVERSION_ID = 'c0000000000000000000000000000001';
+
+    private const CONVERSION_VALUE = 200;
+
+    private const BID_STRATEGY_ID = 'd0000000000000000000000000000001';
+
+    public function testPaymentList(): void
+    {
+        $reportId = 0;
+        $campaigns = new CampaignCollection(self::campaign([], [self::banner()], [self::conversion()]));
+        $bidStrategies = new BidStrategyCollection();
+        $payments = (new PaymentCalculator(
+            $campaigns,
+            $bidStrategies,
+            $this->getMockedCampaignCostRepository(),
+            new PaymentCalculatorConfig()
+        ))->calcu
