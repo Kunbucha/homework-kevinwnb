@@ -66,4 +66,28 @@ final class PaymentCalculatorTest extends TestCase
             $bidStrategies,
             $this->getMockedCampaignCostRepository(),
             new PaymentCalculatorConfig()
-        ))->calcu
+        ))->calculate($reportId, [self::viewEvent(), self::clickEvent()]);
+
+        $list = [];
+        array_push($list, ...$payments);
+
+        $this->assertCount(2, $list);
+    }
+
+    public function testCampaignNotExist(): void
+    {
+        $this->statusForAll(PaymentStatus::CAMPAIGN_NOT_FOUND, ['campaign_id' => '6000000000000000000000000000000f']);
+    }
+
+    public function testCampaignDeleted(): void
+    {
+        $this->statusForAll(PaymentStatus::ACCEPTED, [], ['deleted_at' => self::TIME + 10]);
+        $this->statusForAll(PaymentStatus::ACCEPTED, [], ['deleted_at' => self::TIME - 10]);
+        $this->statusForAll(PaymentStatus::CAMPAIGN_NOT_FOUND, [], ['deleted_at' => self::TIME - 110]);
+        $this->statusForAll(PaymentStatus::CAMPAIGN_NOT_FOUND, [], ['deleted_at' => self::TIME - 3600 * 24]);
+    }
+
+    public function testCampaignOutdated(): void
+    {
+        $this->statusForAll(PaymentStatus::ACCEPTED, [], ['time_end' => self::TIME + 10]);
+        $this->statusForAll(P
