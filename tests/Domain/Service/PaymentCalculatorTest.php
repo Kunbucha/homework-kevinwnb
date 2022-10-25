@@ -107,4 +107,26 @@ final class PaymentCalculatorTest extends TestCase
     public function testBannerDeleted(): void
     {
         $this->statusForAll(PaymentStatus::ACCEPTED, [], [], ['deleted_at' => self::TIME + 10]);
-        $this->statusForAl
+        $this->statusForAll(PaymentStatus::ACCEPTED, [], [], ['deleted_at' => self::TIME - 10]);
+        $this->statusForAll(PaymentStatus::BANNER_NOT_FOUND, [], [], ['deleted_at' => self::TIME - 110]);
+        $this->statusForAll(PaymentStatus::BANNER_NOT_FOUND, [], [], ['deleted_at' => self::TIME - 3600 * 24]);
+    }
+
+    public function testConversionNotExist(): void
+    {
+        $campaigns = new CampaignCollection(self::campaign([], [self::banner()], [self::conversion()]));
+
+        $payment = $this->single(
+            $campaigns,
+            self::conversionEvent(
+                [
+                    'conversion_id' => 'c000000000000000000000000000000f',
+                ]
+            )
+        );
+        $this->assertEquals(PaymentStatus::CONVERSION_NOT_FOUND, $payment['status']);
+    }
+
+    public function testConversionDeleted(): void
+    {
+        $campaigns = new Campaig
