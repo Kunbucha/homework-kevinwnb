@@ -129,4 +129,21 @@ final class PaymentCalculatorTest extends TestCase
 
     public function testConversionDeleted(): void
     {
-        $campaigns = new Campaig
+        $campaigns = new CampaignCollection(
+            self::campaign([], [self::banner()], [self::conversion(['deleted_at' => self::TIME + 10])])
+        );
+        $payment = $this->single($campaigns, self::conversionEvent());
+        $this->assertEquals(PaymentStatus::ACCEPTED, $payment['status']);
+
+        $campaigns = new CampaignCollection(
+            self::campaign([], [self::banner()], [self::conversion(['deleted_at' => self::TIME - 10])])
+        );
+        $payment = $this->single($campaigns, self::conversionEvent());
+        $this->assertEquals(PaymentStatus::ACCEPTED, $payment['status']);
+
+        $campaigns = new CampaignCollection(
+            self::campaign([], [self::banner()], [self::conversion(['deleted_at' => self::TIME - 110])])
+        );
+        $payment = $this->single($campaigns, self::conversionEvent());
+        $this->assertEquals(PaymentStatus::CONVERSION_NOT_FOUND, $payment['status']);
+
