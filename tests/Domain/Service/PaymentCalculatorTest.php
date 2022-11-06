@@ -147,3 +147,25 @@ final class PaymentCalculatorTest extends TestCase
         $payment = $this->single($campaigns, self::conversionEvent());
         $this->assertEquals(PaymentStatus::CONVERSION_NOT_FOUND, $payment['status']);
 
+        $campaigns = new CampaignCollection(
+            self::campaign([], [self::banner()], [self::conversion(['deleted_at' => self::TIME - 3600 * 24])])
+        );
+        $payment = $this->single($campaigns, self::conversionEvent());
+        $this->assertEquals(PaymentStatus::CONVERSION_NOT_FOUND, $payment['status']);
+    }
+
+    public function testPreviousState(): void
+    {
+        $campaigns = new CampaignCollection(
+            self::campaign([], [self::banner()], [self::conversion()])
+        );
+
+        $payment = $this->single($campaigns, self::conversionEvent(['payment_status' => PaymentStatus::ACCEPTED]));
+        $this->assertEquals(PaymentStatus::ACCEPTED, $payment['status']);
+
+        $payment =
+            $this->single($campaigns, self::conversionEvent(['payment_status' => PaymentStatus::HUMAN_SCORE_TOO_LOW]));
+        $this->assertEquals(PaymentStatus::ACCEPTED, $payment['status']);
+
+        $payment =
+            $this->
