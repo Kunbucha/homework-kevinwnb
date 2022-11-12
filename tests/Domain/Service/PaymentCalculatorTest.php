@@ -168,4 +168,19 @@ final class PaymentCalculatorTest extends TestCase
         $this->assertEquals(PaymentStatus::ACCEPTED, $payment['status']);
 
         $payment =
-            $this->
+            $this->single($campaigns, self::conversionEvent(['payment_status' => PaymentStatus::CAMPAIGN_OUTDATED]));
+        $this->assertEquals(PaymentStatus::CAMPAIGN_OUTDATED, $payment['status']);
+
+        $payment =
+            $this->single($campaigns, self::conversionEvent(['payment_status' => PaymentStatus::INVALID_TARGETING]));
+        $this->assertEquals(PaymentStatus::INVALID_TARGETING, $payment['status']);
+    }
+
+    public function testHumanScore(): void
+    {
+        $this->statusForAll(PaymentStatus::HUMAN_SCORE_TOO_LOW, ['human_score' => 0]);
+        $this->statusForAll(PaymentStatus::HUMAN_SCORE_TOO_LOW, ['human_score' => 0.3]);
+        $this->statusForAll(PaymentStatus::HUMAN_SCORE_TOO_LOW, ['human_score' => 0.399]);
+        $this->statusForAll(PaymentStatus::ACCEPTED, ['human_score' => 0.5]);
+        $this->statusForAll(PaymentStatus::ACCEPTED, ['human_score' => 0.501]);
+       
