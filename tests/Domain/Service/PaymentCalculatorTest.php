@@ -183,4 +183,17 @@ final class PaymentCalculatorTest extends TestCase
         $this->statusForAll(PaymentStatus::HUMAN_SCORE_TOO_LOW, ['human_score' => 0.399]);
         $this->statusForAll(PaymentStatus::ACCEPTED, ['human_score' => 0.5]);
         $this->statusForAll(PaymentStatus::ACCEPTED, ['human_score' => 0.501]);
-       
+        $this->statusForAll(PaymentStatus::ACCEPTED, ['human_score' => 0.7]);
+        $this->statusForAll(PaymentStatus::ACCEPTED, ['human_score' => 1]);
+
+        $campaigns = new CampaignCollection(self::campaign([], [self::banner()], [self::conversion()]));
+        $payment = $this->single($campaigns, self::viewEvent(['human_score' => 0.499]));
+        $this->assertEquals(PaymentStatus::HUMAN_SCORE_TOO_LOW, $payment['status']);
+
+        $campaigns = new CampaignCollection(self::campaign([], [self::banner()], [self::conversion()]));
+        $payment = $this->single($campaigns, self::viewEvent(['human_score' => 0.4]));
+        $this->assertEquals(PaymentStatus::HUMAN_SCORE_TOO_LOW, $payment['status']);
+
+        $campaigns = new CampaignCollection(self::campaign([], [self::banner()], [self::conversion()]));
+        $payment = $this->single($campaigns, self::clickEvent(['human_score' => 0.499]));
+        $this->assertEquals(PaymentStatus::HU
