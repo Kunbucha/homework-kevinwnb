@@ -210,4 +210,20 @@ final class PaymentCalculatorTest extends TestCase
         $payment = $this->single($campaigns, self::conversionEvent(['human_score' => 0.4]));
         $this->assertEquals(PaymentStatus::ACCEPTED, $payment['status']);
 
-        $campaigns = new CampaignCollec
+        $campaigns = new CampaignCollection(self::campaign([], [self::banner()], [self::conversion()]));
+        $payment = $this->single($campaigns, self::conversionEvent(['human_score' => 0.39]));
+        $this->assertEquals(PaymentStatus::HUMAN_SCORE_TOO_LOW, $payment['status']);
+    }
+
+    public function testHumanScoreForMetaverse(): void
+    {
+        $data = ['medium' => Medium::Metaverse->value];
+
+        $this->statusForAll(PaymentStatus::HUMAN_SCORE_TOO_LOW, ['human_score' => 0], $data);
+        $this->statusForAll(PaymentStatus::HUMAN_SCORE_TOO_LOW, ['human_score' => 0.3], $data);
+        $this->statusForAll(PaymentStatus::HUMAN_SCORE_TOO_LOW, ['human_score' => 0.399], $data);
+        $this->statusForAll(PaymentStatus::ACCEPTED, ['human_score' => 0.4], $data);
+        $this->statusForAll(PaymentStatus::ACCEPTED, ['human_score' => 0.51], $data);
+
+        $campaigns = new CampaignCollection(self::campaign($data, [self::banner()], [self::conversion()]));
+        $payment = $this->single($campaigns, self::viewEvent(['human_score'
