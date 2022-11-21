@@ -226,4 +226,17 @@ final class PaymentCalculatorTest extends TestCase
         $this->statusForAll(PaymentStatus::ACCEPTED, ['human_score' => 0.51], $data);
 
         $campaigns = new CampaignCollection(self::campaign($data, [self::banner()], [self::conversion()]));
-        $payment = $this->single($campaigns, self::viewEvent(['human_score'
+        $payment = $this->single($campaigns, self::viewEvent(['human_score' => 0.4]));
+        $this->assertEquals(PaymentStatus::ACCEPTED, $payment['status']);
+
+        $campaigns = new CampaignCollection(self::campaign($data, [self::banner()], [self::conversion()]));
+        $payment = $this->single($campaigns, self::viewEvent(['human_score' => 0.39]));
+        $this->assertEquals(PaymentStatus::HUMAN_SCORE_TOO_LOW, $payment['status']);
+
+        $campaigns = new CampaignCollection(self::campaign($data, [self::banner()], [self::conversion()]));
+        $payment = $this->single($campaigns, self::clickEvent(['human_score' => 0.4]));
+        $this->assertEquals(PaymentStatus::ACCEPTED, $payment['status']);
+
+        $campaigns = new CampaignCollection(self::campaign($data, [self::banner()], [self::conversion()]));
+        $payment = $this->single($campaigns, self::clickEvent(['human_score' => 0.39]));
+        $this->assertEquals(PaymentStatus::HUMAN_SCORE_TOO_LOW, $payment['status']
