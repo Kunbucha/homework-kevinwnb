@@ -256,4 +256,19 @@ final class PaymentCalculatorTest extends TestCase
 
         $payment = $this->single($campaigns, self::viewEvent(['human_score' => 0.5]));
         $this->assertEquals(PaymentStatus::ACCEPTED, $payment['status']);
-        $payment = $this->single($campaigns, self:
+        $payment = $this->single($campaigns, self::conversionEvent(['human_score' => 0.4]));
+        $this->assertEquals(PaymentStatus::ACCEPTED, $payment['status']);
+
+        $payment = $this->single($campaigns, self::viewEvent(['human_score' => 0.5]), ['humanScoreThreshold' => 0.55]);
+        $this->assertEquals(PaymentStatus::HUMAN_SCORE_TOO_LOW, $payment['status']);
+        $payment = $this->single(
+            $campaigns,
+            self::conversionEvent(['human_score' => 0.5]),
+            ['conversionHumanScoreThreshold' => 0.55]
+        );
+        $this->assertEquals(PaymentStatus::HUMAN_SCORE_TOO_LOW, $payment['status']);
+
+        $payment = $this->single($campaigns, self::viewEvent(['human_score' => 0.3]), ['humanScoreThreshold' => '0.5']);
+        $this->assertEquals(PaymentStatus::HUMAN_SCORE_TOO_LOW, $payment['status']);
+        $payment =
+            $this->single($campaigns, self::conversionEvent(['h
