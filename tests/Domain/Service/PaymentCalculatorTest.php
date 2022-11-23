@@ -286,4 +286,28 @@ final class PaymentCalculatorTest extends TestCase
         $this->statusForAll(PaymentStatus::ACCEPTED);
         $this->statusForAll(PaymentStatus::INVALID_TARGETING, ['keywords' => ['r1' => ['r1_v3']]]);
         $this->statusForAll(PaymentStatus::INVALID_TARGETING, ['keywords' => ['e1' => ['e1_v1']]]);
-        $this->statu
+        $this->statusForAll(PaymentStatus::INVALID_TARGETING, [], ['filters' => ['require' => ['r1' => ['r1_v3']]]]);
+        $this->statusForAll(PaymentStatus::INVALID_TARGETING, [], ['filters' => ['exclude' => ['e1' => ['e1_v3']]]]);
+    }
+
+    public function testSimpleEvents(): void
+    {
+        $campaigns = new CampaignCollection(self::campaign([], [self::banner()], [self::conversion()]));
+
+        $this->assertEquals(
+            [
+                '10000000000000000000000000000001' => self::CAMPAIGN_CPV,
+            ],
+            $this->values($campaigns, [self::viewEvent()])
+        );
+        $this->assertEquals(
+            [
+                '10000000000000000000000000000002' => self::CAMPAIGN_CPC,
+            ],
+            $this->values($campaigns, [self::clickEvent()])
+        );
+        $this->assertEquals(
+            [
+                '10000000000000000000000000000003' => self::CONVERSION_VALUE,
+            ],
+            $this->values($campaigns, [self::conversionEv
