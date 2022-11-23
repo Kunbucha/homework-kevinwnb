@@ -271,4 +271,19 @@ final class PaymentCalculatorTest extends TestCase
         $payment = $this->single($campaigns, self::viewEvent(['human_score' => 0.3]), ['humanScoreThreshold' => '0.5']);
         $this->assertEquals(PaymentStatus::HUMAN_SCORE_TOO_LOW, $payment['status']);
         $payment =
-            $this->single($campaigns, self::conversionEvent(['h
+            $this->single($campaigns, self::conversionEvent(['human_score' => 0.3]), ['humanScoreThreshold' => '0.5']);
+        $this->assertEquals(PaymentStatus::HUMAN_SCORE_TOO_LOW, $payment['status']);
+
+        $payment = $this->single($campaigns, self::viewEvent(['human_score' => 0.49]), ['humanScoreThreshold' => null]);
+        $this->assertEquals(PaymentStatus::HUMAN_SCORE_TOO_LOW, $payment['status']);
+        $payment =
+            $this->single($campaigns, self::conversionEvent(['human_score' => 0.39]), ['humanScoreThreshold' => '0.5']);
+        $this->assertEquals(PaymentStatus::HUMAN_SCORE_TOO_LOW, $payment['status']);
+    }
+
+    public function testKeywords(): void
+    {
+        $this->statusForAll(PaymentStatus::ACCEPTED);
+        $this->statusForAll(PaymentStatus::INVALID_TARGETING, ['keywords' => ['r1' => ['r1_v3']]]);
+        $this->statusForAll(PaymentStatus::INVALID_TARGETING, ['keywords' => ['e1' => ['e1_v1']]]);
+        $this->statu
