@@ -310,4 +310,29 @@ final class PaymentCalculatorTest extends TestCase
             [
                 '10000000000000000000000000000003' => self::CONVERSION_VALUE,
             ],
-            $this->values($campaigns, [self::conversionEv
+            $this->values($campaigns, [self::conversionEvent()])
+        );
+        $this->assertEquals(
+            [
+                '10000000000000000000000000000001' => self::CAMPAIGN_CPV,
+                '10000000000000000000000000000002' => self::CAMPAIGN_CPC,
+                '10000000000000000000000000000003' => self::CONVERSION_VALUE,
+            ],
+            $this->values($campaigns, [self::viewEvent(), self::clickEvent(), self::conversionEvent()])
+        );
+    }
+
+    public function testMultipleEvents(): void
+    {
+        $campaigns = new CampaignCollection(
+            self::campaign(
+                [],
+                [self::banner()],
+                [
+                    self::conversion(),
+                    self::conversion(['id' => 'c0000000000000000000000000000002', 'is_repeatable' => true]),
+                ]
+            ),
+            self::campaign(
+                ['id' => '60000000000000000000000000000002', 'max_cpm' => 123000],
+                [self::banner(['id' => '700000000
