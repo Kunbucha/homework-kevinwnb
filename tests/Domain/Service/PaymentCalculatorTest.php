@@ -356,4 +356,20 @@ final class PaymentCalculatorTest extends TestCase
             $this->values(
                 $campaigns,
                 [
-                 
+                    self::viewEvent(),
+                    self::viewEvent(['id' => '10000000000000000000000000000011']),
+                    self::viewEvent(['id' => '10000000000000000000000000000021']),
+                    self::viewEvent(
+                        [
+                            'id' => '10000000000000000000000000000101',
+                            'campaign_id' => '60000000000000000000000000000002',
+                        ]
+                    ),
+                    self::clickEvent(),
+                    self::conversionEvent(),
+                    self::conversionEvent(['id' => '10000000000000000000000000000032']),
+                    self::conversionEvent(
+                        ['id' => '10000000000000000000000000000033', 'group_id' => 'b0000000000000000000000000000002']
+                    ),
+                    self::conversionEvent(
+                        ['id' => '10000000000000000000000000000034', 'group_
