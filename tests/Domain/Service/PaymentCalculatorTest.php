@@ -372,4 +372,29 @@ final class PaymentCalculatorTest extends TestCase
                         ['id' => '10000000000000000000000000000033', 'group_id' => 'b0000000000000000000000000000002']
                     ),
                     self::conversionEvent(
-                        ['id' => '10000000000000000000000000000034', 'group_
+                        ['id' => '10000000000000000000000000000034', 'group_id' => 'b0000000000000000000000000000002']
+                    ),
+                    self::conversionEvent(
+                        [
+                            'id' => '10000000000000000000000000000035',
+                            'conversion_id' => 'c0000000000000000000000000000002',
+                            'group_id' => 'b0000000000000000000000000000003',
+                        ]
+                    ),
+                    self::conversionEvent(
+                        [
+                            'id' => '10000000000000000000000000000036',
+                            'conversion_id' => 'c0000000000000000000000000000002',
+                            'group_id' => 'b0000000000000000000000000000004',
+                        ]
+                    ),
+                ]
+            )
+        );
+    }
+
+    public function testViewEventsOfOneUserDifferentPageRanks(): void
+    {
+        $campaigns = new CampaignCollection(
+            self::campaign(
+ 
