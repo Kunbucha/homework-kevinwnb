@@ -425,4 +425,31 @@ final class PaymentCalculatorTest extends TestCase
         );
     }
 
-    public function testOverBudget():
+    public function testOverBudget(): void
+    {
+        $campaigns = new CampaignCollection(
+            self::campaign(
+                ['budget' => 500, 'max_cpm' => 300000, 'max_cpc' => 700],
+                [self::banner()],
+                [
+                    self::conversion(),
+                    self::conversion(
+                        ['id' => 'c0000000000000000000000000000002', 'limit_type' => LimitType::OUT_OF_BUDGET]
+                    ),
+                ]
+            )
+        );
+
+        $this->assertEquals(
+            [
+                '10000000000000000000000000000001' => 250,
+                '10000000000000000000000000000011' => 250,
+            ],
+            $this->values(
+                $campaigns,
+                [
+                    self::viewEvent(),
+                    self::viewEvent(
+                        [
+                            'id' => '10000000000000000000000000000011',
+                            'user_id' => 'a000000000000
