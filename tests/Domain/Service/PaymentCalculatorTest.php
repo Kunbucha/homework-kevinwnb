@@ -397,4 +397,32 @@ final class PaymentCalculatorTest extends TestCase
     {
         $campaigns = new CampaignCollection(
             self::campaign(
- 
+                [],
+                [self::banner()],
+            ),
+        );
+
+        $this->assertEquals(
+            [
+                '10000000000000000000000000000001' => 50,
+                '10000000000000000000000000000011' => 33,
+                '10000000000000000000000000000021' => 16,
+            ],
+            $this->values(
+                $campaigns,
+                [
+                    self::viewEvent(['page_rank' => 0.3]),
+                    self::viewEvent([
+                        'id' => '10000000000000000000000000000011',
+                        'page_rank' => 0.2,
+                    ]),
+                    self::viewEvent([
+                        'id' => '10000000000000000000000000000021',
+                        'page_rank' => 0.1,
+                    ]),
+                ],
+            )
+        );
+    }
+
+    public function testOverBudget():
