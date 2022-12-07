@@ -478,4 +478,28 @@ final class PaymentCalculatorTest extends TestCase
                     self::conversionEvent(),
                     self::conversionEvent(['id' => '10000000000000000000000000000031']),
                     self::conversionEvent(
- 
+                        [
+                            'id' => '10000000000000000000000000000032',
+                            'user_id' => 'a0000000000000000000000000000002',
+                        ]
+                    ),
+                    self::conversionEvent(
+                        [
+                            'id' => '10000000000000000000000000000033',
+                            'conversion_id' => 'c0000000000000000000000000000002',
+                        ]
+                    ),
+                    self::conversionEvent(
+                        [
+                            'id' => '10000000000000000000000000000034',
+                            'conversion_id' => 'c0000000000000000000000000000002',
+                        ]
+                    ),
+                ]
+            )
+        );
+
+        $this->assertEquals(
+            [
+                '10000000000000000000000000000001' => 68,
+                '10000000000000000000000000000011' =>
