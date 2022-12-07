@@ -452,4 +452,30 @@ final class PaymentCalculatorTest extends TestCase
                     self::viewEvent(
                         [
                             'id' => '10000000000000000000000000000011',
-                            'user_id' => 'a000000000000
+                            'user_id' => 'a0000000000000000000000000000002',
+                        ]
+                    ),
+                ]
+            )
+        );
+
+        $this->assertEquals(
+            ['10000000000000000000000000000002' => 500],
+            $this->values($campaigns, [self::clickEvent()])
+        );
+
+        $this->assertEquals(
+            [
+                '10000000000000000000000000000003' => 166,
+                '10000000000000000000000000000031' => 166,
+                '10000000000000000000000000000032' => 166,
+                '10000000000000000000000000000033' => self::CONVERSION_VALUE,
+                '10000000000000000000000000000034' => self::CONVERSION_VALUE,
+            ],
+            $this->values(
+                $campaigns,
+                [
+                    self::conversionEvent(),
+                    self::conversionEvent(['id' => '10000000000000000000000000000031']),
+                    self::conversionEvent(
+ 
