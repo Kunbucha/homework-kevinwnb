@@ -525,4 +525,36 @@ final class PaymentCalculatorTest extends TestCase
 
         $this->assertEquals(
             ['10000000000000000000000000000003' => 500],
-            $this->values($c
+            $this->values($campaigns, [self::conversionEvent(['conversion_value' => 501])])
+        );
+    }
+
+    public function testZeroCosts(): void
+    {
+        $campaigns = new CampaignCollection(
+            self::campaign(['max_cpm' => 0, 'max_cpc' => 0], [self::banner()], [self::conversion()])
+        );
+
+        $this->assertEquals(
+            [
+                '10000000000000000000000000000001' => 0,
+                '10000000000000000000000000000011' => 0,
+            ],
+            $this->values(
+                $campaigns,
+                [
+                    self::viewEvent(),
+                    self::viewEvent(['id' => '10000000000000000000000000000011']),
+                ]
+            )
+        );
+
+        $this->assertEquals(
+            ['10000000000000000000000000000003' => 0],
+            $this->values($campaigns, [self::conversionEvent(['conversion_value' => 0])])
+        );
+    }
+
+    public function testPageRank(): void
+    {
+        $campaigns 
