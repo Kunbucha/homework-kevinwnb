@@ -557,4 +557,31 @@ final class PaymentCalculatorTest extends TestCase
 
     public function testPageRank(): void
     {
-        $campaigns 
+        $campaigns = new CampaignCollection(self::campaign([], [self::banner()], [self::conversion()]));
+
+        // one event
+        $this->assertEquals(
+            [
+                '10000000000000000000000000000001' => self::CAMPAIGN_CPV,
+            ],
+            $this->values(
+                $campaigns,
+                [
+                    self::viewEvent(['page_rank' => 0.4]),
+                ]
+            )
+        );
+
+        // two users
+        $this->assertEquals(
+            [
+                '10000000000000000000000000000001' => self::CAMPAIGN_CPV * 0.8,
+                '10000000000000000000000000000002' => self::CAMPAIGN_CPV * 1.2,
+            ],
+            $this->values(
+                $campaigns,
+                [
+                    self::viewEvent(['page_rank' => 0.4]),
+                    self::viewEvent(
+                        [
+                            'id' => 
