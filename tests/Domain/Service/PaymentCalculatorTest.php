@@ -584,4 +584,32 @@ final class PaymentCalculatorTest extends TestCase
                     self::viewEvent(['page_rank' => 0.4]),
                     self::viewEvent(
                         [
-                            'id' => 
+                            'id' => '10000000000000000000000000000002',
+                            'user_id' => 'a0000000000000000000000000000002',
+                            'page_rank' => 0.6
+                        ]
+                    )
+                ]
+            )
+        );
+
+        // same user
+        $this->assertEquals(
+            [
+                '10000000000000000000000000000001' => self::CAMPAIGN_CPV * 0.4,
+                '10000000000000000000000000000002' => self::CAMPAIGN_CPV * 0.6,
+            ],
+            $this->values(
+                $campaigns,
+                [
+                    self::viewEvent(['page_rank' => 0.4]),
+                    self::viewEvent(['id' => '10000000000000000000000000000002', 'page_rank' => 0.6])
+                ]
+            )
+        );
+
+        // click event
+        $this->assertEquals(
+            [
+                '10000000000000000000000000000001' => self::CAMPAIGN_CPV,
+                '10
