@@ -684,4 +684,30 @@ final class PaymentCalculatorTest extends TestCase
             [
                 '10000000000000000000000000000001' => self::CAMPAIGN_CPV,
             ],
-            $this->valuesWithCustomBidStrategy($campaigns, $bi
+            $this->valuesWithCustomBidStrategy($campaigns, $bidStrategies, [self::viewEvent()])
+        );
+
+        // two users
+        $cpmScale = 2.0; // 1 / ((0.4 + 0.6) / 2)
+        $this->assertEquals(
+            [
+                '10000000000000000000000000000001' => self::CAMPAIGN_CPV * $cpmScale * 0.4,
+                '10000000000000000000000000000002' => self::CAMPAIGN_CPV * $cpmScale * 0.6,
+            ],
+            $this->valuesWithCustomBidStrategy(
+                $campaigns,
+                $bidStrategies,
+                [
+                    self::viewEvent(),
+                    self::viewEvent(
+                        [
+                            'id' => '10000000000000000000000000000002',
+                            'user_id' => 'a0000000000000000000000000000002',
+                            'keywords' => ['r1' => ['r1_v1'], 'e1' => ['e1_v4']],
+                        ]
+                    )
+                ]
+            )
+        );
+
+        // same user
