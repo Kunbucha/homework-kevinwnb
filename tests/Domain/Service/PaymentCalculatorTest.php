@@ -660,4 +660,28 @@ final class PaymentCalculatorTest extends TestCase
         );
         $this->assertEquals(
             [
-                '100
+                '10000000000000000000000000000002' => 0,
+            ],
+            $this->values($campaigns, [self::clickEvent(['page_rank' => -1])])
+        );
+        $this->assertEquals(
+            ['10000000000000000000000000000003' => self::CONVERSION_VALUE],
+            $this->values($campaigns, [self::conversionEvent(['page_rank' => -1])])
+        );
+    }
+
+    public function testBidStrategy(): void
+    {
+        $campaigns = new CampaignCollection(self::campaign([], [self::banner()], [self::conversion()]));
+        $bidStrategies = new BidStrategyCollection(
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'e1:e1_v3', 0.4),
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'e1:e1_v4', 0.6)
+        );
+
+
+        // one event
+        $this->assertEquals(
+            [
+                '10000000000000000000000000000001' => self::CAMPAIGN_CPV,
+            ],
+            $this->valuesWithCustomBidStrategy($campaigns, $bi
