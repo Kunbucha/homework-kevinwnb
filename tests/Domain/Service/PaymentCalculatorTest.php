@@ -735,4 +735,23 @@ final class PaymentCalculatorTest extends TestCase
     public function testBidStrategies(): void
     {
         $campaigns = new CampaignCollection(self::campaign([], [self::banner()], [self::conversion()]));
-        $bidStrategi
+        $bidStrategies = new BidStrategyCollection(
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'r1:r1_v1', 0.8),
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'r1:r1_v2', 1),
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'e1:e1_v3', 0.5),
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'c1:c1_v1', 0.6)
+        );
+
+        $cpmScale = 1.5; // 1 / ((0.4 + 1 + 0.6) / 3)
+        $this->assertEquals(
+            [
+                '10000000000000000000000000000001' => self::CAMPAIGN_CPV * $cpmScale * 0.8 * 0.5,
+                '10000000000000000000000000000002' => self::CAMPAIGN_CPV * $cpmScale * 1.0,
+                '10000000000000000000000000000003' => self::CAMPAIGN_CPV * $cpmScale * 1.0 * 0.6,
+            ],
+            $this->valuesWithCustomBidStrategy(
+                $campaigns,
+                $bidStrategies,
+                [
+                    self::viewEvent(),
+  
