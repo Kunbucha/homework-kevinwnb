@@ -754,4 +754,25 @@ final class PaymentCalculatorTest extends TestCase
                 $bidStrategies,
                 [
                     self::viewEvent(),
-  
+                    self::viewEvent(
+                        [
+                            'id' => '10000000000000000000000000000002',
+                            'user_id' => 'a0000000000000000000000000000002',
+                            'keywords' => ['r1' => ['r1_v2']],
+                        ]
+                    ),
+                    self::viewEvent(
+                        [
+                            'id' => '10000000000000000000000000000003',
+                            'user_id' => 'a0000000000000000000000000000003',
+                            'keywords' => ['r1' => ['r1_v2'], 'c1' => ['c1_v1']],
+                        ]
+                    ),
+                ]
+            )
+        );
+    }
+
+    public function testBidStrategyNotMatchingCampaignFilters(): void
+    {
+        $campaigns = new CampaignCollection(self::campaign([], [self::banner()], [self::conversi
