@@ -775,4 +775,25 @@ final class PaymentCalculatorTest extends TestCase
 
     public function testBidStrategyNotMatchingCampaignFilters(): void
     {
-        $campaigns = new CampaignCollection(self::campaign([], [self::banner()], [self::conversi
+        $campaigns = new CampaignCollection(self::campaign([], [self::banner()], [self::conversion()]));
+        $bidStrategies = new BidStrategyCollection(
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'r1:r1_v3', 0.6)
+        );
+        $events = [self::viewEvent()];
+
+        $result = self::valuesWithCustomBidStrategy($campaigns, $bidStrategies, $events);
+
+        $this->assertEquals(self::CAMPAIGN_CPV, $result['10000000000000000000000000000001']);
+    }
+
+    public function testBidStrategyMatchingCampaignFiltersZero(): void
+    {
+        $campaigns = new CampaignCollection(self::campaign([], [self::banner()], [self::conversion()]));
+        $bidStrategies = new BidStrategyCollection(
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'r1:r1_v1', 0)
+        );
+        $events = [self::viewEvent()];
+
+        $result = self::valuesWithCustomBidStrategy($campaigns, $bidStrategies, $events);
+
+        $this->assertEquals(self::CAMPAIGN_CPV, $result['10000000000000000000
