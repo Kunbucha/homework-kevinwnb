@@ -796,4 +796,28 @@ final class PaymentCalculatorTest extends TestCase
 
         $result = self::valuesWithCustomBidStrategy($campaigns, $bidStrategies, $events);
 
-        $this->assertEquals(self::CAMPAIGN_CPV, $result['10000000000000000000
+        $this->assertEquals(self::CAMPAIGN_CPV, $result['10000000000000000000000000000001']);
+    }
+
+    public function testBidStrategiesDefaultValue(): void
+    {
+        $campaigns = new CampaignCollection(self::campaign([], [self::banner()], [self::conversion()]));
+        $bidStrategies1 = new BidStrategyCollection(
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'r1:r1_v1', 2),
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'r1:r1_v4', 1)
+        );
+        $bidStrategies2 = new BidStrategyCollection(
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'r1:*', 2),
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'r1:r1_v4', 1)
+        );
+
+        $events = [
+            self::viewEvent(
+                [
+                    'keywords' => ['r1' => ['r1_v4'], 'e1' => []],
+                ]
+            ),
+            self::viewEvent(
+                [
+                    'id' => '10000000000000000000000000000002',
+   
