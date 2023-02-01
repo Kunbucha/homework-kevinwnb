@@ -866,4 +866,31 @@ final class PaymentCalculatorTest extends TestCase
                     'id' => '10000000000000000000000000000002',
                     'case_id' => '20000000000000000000000000000002',
                     'impression_id' => '80000000000000000000000000000002',
-                    'tracking_id' => '9000000000000000
+                    'tracking_id' => '90000000000000000000000000000002',
+                    'user_id' => 'a0000000000000000000000000000002',
+                    'keywords' => ['r1' => ['r1_v1'], 'e1' => []],
+                ]
+            ),
+        ];
+
+        $this->assertEquals(
+            $this->valuesWithCustomBidStrategy(
+                $campaigns,
+                $bidStrategies2,
+                $events
+            ),
+            $this->valuesWithCustomBidStrategy(
+                $campaigns,
+                $bidStrategies1,
+                $events
+            )
+        );
+    }
+
+    public function testBidStrategiesWithNormalization(): void
+    {
+        $campaigns = new CampaignCollection(self::campaign([], [self::banner()], [self::conversion()]));
+        $bidStrategies = new BidStrategyCollection(
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'e1:*', 0),
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'e1:e1_v3', 2),
+            new BidStra
