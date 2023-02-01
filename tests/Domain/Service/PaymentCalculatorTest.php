@@ -846,4 +846,24 @@ final class PaymentCalculatorTest extends TestCase
     public function testBidStrategiesMissingValue(): void
     {
         $campaigns = new CampaignCollection(self::campaign([], [self::banner()], [self::conversion()]));
-  
+        $bidStrategies1 = new BidStrategyCollection(
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'r1:r1_v1', 2),
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'r1:r1_v4', 1)
+        );
+        $bidStrategies2 = new BidStrategyCollection(
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'z1:', 2),
+            new BidStrategy(new Id(self::BID_STRATEGY_ID), 'r1:r1_v4', 1)
+        );
+
+        $events = [
+            self::viewEvent(
+                [
+                    'keywords' => ['r1' => ['r1_v4'], 'z1' => ['asd']],
+                ]
+            ),
+            self::viewEvent(
+                [
+                    'id' => '10000000000000000000000000000002',
+                    'case_id' => '20000000000000000000000000000002',
+                    'impression_id' => '80000000000000000000000000000002',
+                    'tracking_id' => '9000000000000000
