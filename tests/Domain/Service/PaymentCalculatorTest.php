@@ -912,4 +912,21 @@ final class PaymentCalculatorTest extends TestCase
                 $bidStrategies,
                 [
                     self::viewEvent(
-        
+                        [
+                            'keywords' => ['r1' => ['r1_v4'], 'e1' => ['e1_v4'], 'z1' => ['x']],
+                        ]
+                    ),
+                    self::viewEvent(
+                        [
+                            'id' => '10000000000000000000000000000002',
+                            'case_id' => '20000000000000000000000000000002',
+                            'impression_id' => '80000000000000000000000000000002',
+                            'tracking_id' => '90000000000000000000000000000002',
+                            'user_id' => 'a0000000000000000000000000000002',
+                            'keywords' => ['r1' => ['r1_v1'], 'e1' => ['e1_v3']],
+                        ]
+                    ),
+                    self::viewEvent(
+                        [
+                            'id' => '10000000000000000000000000000003',
+                  
