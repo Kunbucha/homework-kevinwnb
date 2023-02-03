@@ -929,4 +929,26 @@ final class PaymentCalculatorTest extends TestCase
                     self::viewEvent(
                         [
                             'id' => '10000000000000000000000000000003',
-                  
+                            'case_id' => '20000000000000000000000000000003',
+                            'impression_id' => '80000000000000000000000000000003',
+                            'tracking_id' => '90000000000000000000000000000002',
+                            'user_id' => 'a0000000000000000000000000000002',
+                            'keywords' => ['r1' => ['r1_v2'], 'e1' => ['e1_v3']],
+                        ]
+                    ),
+                ]
+            )
+        );
+    }
+
+    public function testAutoCpmEmptyHistory(): void
+    {
+        $reportId = 0;
+        $config = new PaymentCalculatorConfig();
+        $campaigns = new CampaignCollection(
+            self::campaign(['max_cpm' => null, 'max_cpc' => null], [self::banner()], [self::conversion()])
+        );
+        $bidStrategies = new BidStrategyCollection();
+        $repository = $this->createMock(CampaignCostRepository::class);
+        $repository
+            ->expects($this->
