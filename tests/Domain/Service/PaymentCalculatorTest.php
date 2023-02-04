@@ -951,4 +951,20 @@ final class PaymentCalculatorTest extends TestCase
         $bidStrategies = new BidStrategyCollection();
         $repository = $this->createMock(CampaignCostRepository::class);
         $repository
-            ->expects($this->
+            ->expects($this->once())
+            ->method('fetch')
+            ->with($reportId, new Id(self::CAMPAIGN_ID))
+            ->willReturn(null);
+        $repository
+            ->expects($this->once())
+            ->method('saveAll')
+            ->willReturnCallback(function ($campaignCostCollection) use ($reportId, $config) {
+                $this->assertTrue($campaignCostCollection instanceof CampaignCostCollection);
+                $this->assertCount(1, $campaignCostCollection);
+
+                /** @var CampaignCost $campaignCost */
+                $campaignCost = $campaignCostCollection->first();
+                $this->assertEquals($reportId, $campaignCost->getReportId());
+                $this->assertEquals(self::CAMPAIGN_ID, $campaignCost->getCampaignId()->toString());
+                $this->assertNull($campaignCost->getScore());
+                $this->assertEquals($config->getAuto
