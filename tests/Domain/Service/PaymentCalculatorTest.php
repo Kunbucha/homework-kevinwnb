@@ -967,4 +967,24 @@ final class PaymentCalculatorTest extends TestCase
                 $this->assertEquals($reportId, $campaignCost->getReportId());
                 $this->assertEquals(self::CAMPAIGN_ID, $campaignCost->getCampaignId()->toString());
                 $this->assertNull($campaignCost->getScore());
-                $this->assertEquals($config->getAuto
+                $this->assertEquals($config->getAutoCpmDefault(), $campaignCost->getMaxCpm());
+                $this->assertEquals(1.0, $campaignCost->getCpmFactor());
+                $this->assertEquals(1, $campaignCost->getViews());
+                $this->assertEquals((int)($config->getAutoCpmDefault() / 1000), $campaignCost->getViewsCost());
+                $this->assertEquals(0, $campaignCost->getClicks());
+                $this->assertEquals(0, $campaignCost->getClicksCost());
+                $this->assertEquals(0, $campaignCost->getConversions());
+                $this->assertEquals(0, $campaignCost->getConversionsCost());
+
+                return 1;
+            });
+
+        $payments = (new PaymentCalculator($campaigns, $bidStrategies, $repository, $config))
+            ->calculate($reportId, [self::viewEvent()]);
+        $this->assertCount(1, $payments);
+    }
+
+    public function testAutoCpmNoScore(): void
+    {
+        $reportId = 7200;
+        $config = 
