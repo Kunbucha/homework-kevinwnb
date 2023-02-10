@@ -987,4 +987,29 @@ final class PaymentCalculatorTest extends TestCase
     public function testAutoCpmNoScore(): void
     {
         $reportId = 7200;
-        $config = 
+        $config = new PaymentCalculatorConfig();
+        $campaigns = new CampaignCollection(
+            self::campaign(['max_cpm' => null, 'max_cpc' => null], [self::banner()], [self::conversion()])
+        );
+        $bidStrategies = new BidStrategyCollection();
+        $repository = $this->createMock(CampaignCostRepository::class);
+        $repository
+            ->expects($this->once())
+            ->method('fetch')
+            ->with($reportId, new Id(self::CAMPAIGN_ID))
+            ->willReturn(
+                new CampaignCost(
+                    $reportId - 3600,
+                    new Id(self::CAMPAIGN_ID),
+                    null,
+                    $config->getAutoCpmDefault(),
+                    1.0,
+                    1000,
+                    $config->getAutoCpmDefault(),
+                    0,
+                    0,
+                    0,
+                    0
+                )
+            );
+        $repository
