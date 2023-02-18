@@ -1077,4 +1077,16 @@ final class PaymentCalculatorTest extends TestCase
                 )
             );
         $repository
-            ->expects($thi
+            ->expects($this->once())
+            ->method('saveAll')
+            ->willReturnCallback(function ($campaignCostCollection) use ($reportId, $config) {
+                $this->assertTrue($campaignCostCollection instanceof CampaignCostCollection);
+                $this->assertCount(1, $campaignCostCollection);
+
+                /** @var CampaignCost $campaignCost */
+                $campaignCost = $campaignCostCollection->first();
+                $this->assertEquals($reportId, $campaignCost->getReportId());
+                $this->assertEquals(self::CAMPAIGN_ID, $campaignCost->getCampaignId()->toString());
+                $this->assertEquals(0.0, $campaignCost->getScore());
+                $this->assertGreaterThan($config->getAutoCpmDefault(), $campaignCost->getMaxCpm());
+                $this->assertGreaterThan(1.0, $campaignCost->getCpmFacto
