@@ -1112,4 +1112,28 @@ final class PaymentCalculatorTest extends TestCase
         $this->assertEquals(self::CAMPAIGN_BUDGET, $cost);
     }
 
-    public fun
+    public function testAutoCpmNoViewIncreaseOnGreaterCpm(): void
+    {
+        $reportId = 7200;
+        $config = new PaymentCalculatorConfig();
+        $campaigns = new CampaignCollection(
+            self::campaign(
+                ['budget' => 190 * 10 ** 11, 'max_cpm' => null, 'max_cpc' => null],
+                [self::banner()],
+                [self::conversion()],
+            )
+        );
+        $bidStrategies = new BidStrategyCollection();
+
+        $repository = $this->createMock(CampaignCostRepository::class);
+        $previousViews = 5100;
+        $previousScore = $previousViews ** 2 / (4900 * $config->getAutoCpmDefault() / 1000);
+        $previousMaxCpm = (int)(1.1 * $config->getAutoCpmDefault());
+        $previousViewsCost = (int)($previousViews * 1.1 * $config->getAutoCpmDefault() / 1000);
+
+        $views = $previousViews;
+
+        $previousCampaignCost = new CampaignCost(
+            $reportId - 3600,
+            new Id(self::CAMPAIGN_ID),
+            $previo
