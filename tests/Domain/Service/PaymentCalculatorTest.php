@@ -1089,4 +1089,27 @@ final class PaymentCalculatorTest extends TestCase
                 $this->assertEquals(self::CAMPAIGN_ID, $campaignCost->getCampaignId()->toString());
                 $this->assertEquals(0.0, $campaignCost->getScore());
                 $this->assertGreaterThan($config->getAutoCpmDefault(), $campaignCost->getMaxCpm());
-                $this->assertGreaterThan(1.0, $campaignCost->getCpmFacto
+                $this->assertGreaterThan(1.0, $campaignCost->getCpmFactor());
+                $this->assertEquals(500, $campaignCost->getViews());
+                $this->assertEquals(self::CAMPAIGN_BUDGET, $campaignCost->getViewsCost());
+                $this->assertEquals(0, $campaignCost->getClicks());
+                $this->assertEquals(0, $campaignCost->getClicksCost());
+                $this->assertEquals(0, $campaignCost->getConversions());
+                $this->assertEquals(0, $campaignCost->getConversionsCost());
+
+                return 1;
+            });
+
+        $payments = (new PaymentCalculator($campaigns, $bidStrategies, $repository, $config))
+            ->calculate($reportId, self::uniqueViewEvents(500));
+        $count = 0;
+        $cost = 0;
+        foreach ($payments as $payment) {
+            ++$count;
+            $cost += $payment['value'];
+        }
+        $this->assertEquals(500, $count);
+        $this->assertEquals(self::CAMPAIGN_BUDGET, $cost);
+    }
+
+    public fun
