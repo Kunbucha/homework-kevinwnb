@@ -1136,4 +1136,28 @@ final class PaymentCalculatorTest extends TestCase
         $previousCampaignCost = new CampaignCost(
             $reportId - 3600,
             new Id(self::CAMPAIGN_ID),
-            $previo
+            $previousScore,
+            $previousMaxCpm,
+            1.1,
+            $previousViews,
+            $previousViewsCost,
+            0,
+            0,
+            0,
+            0
+        );
+        $repository
+            ->expects($this->once())
+            ->method('fetch')
+            ->with($reportId, new Id(self::CAMPAIGN_ID))
+            ->willReturn($previousCampaignCost);
+        $repository
+            ->expects($this->once())
+            ->method('saveAll')
+            ->willReturnCallback(function ($campaignCostCollection) use ($reportId, $config, $previousCampaignCost) {
+                $this->assertTrue($campaignCostCollection instanceof CampaignCostCollection);
+                $this->assertCount(1, $campaignCostCollection);
+
+                /** @var CampaignCost $campaignCost */
+                $campaignCost = $campaignCostCollection->first();
+                $this->assertEquals($reportId, $campaignCost->getReport
