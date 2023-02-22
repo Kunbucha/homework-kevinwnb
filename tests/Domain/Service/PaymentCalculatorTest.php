@@ -1170,4 +1170,35 @@ final class PaymentCalculatorTest extends TestCase
                 $this->assertEquals(0, $campaignCost->getClicks());
                 $this->assertEquals(0, $campaignCost->getClicksCost());
                 $this->assertEquals(0, $campaignCost->getConversions());
-                $this->assertEquals(0, $campaignCost->getConv
+                $this->assertEquals(0, $campaignCost->getConversionsCost());
+
+                return 1;
+            });
+
+        $payments = (new PaymentCalculator($campaigns, $bidStrategies, $repository, $config))
+            ->calculate($reportId, self::uniqueViewEvents($views));
+        $this->assertCount($views, $payments);
+    }
+
+    /**
+     * This function can be used to check how auto cpm works in long term.
+     */
+    private function testAutoCpm(): void
+    {
+        function viewsByCpm($cpm): int
+        {
+            return (int)(10000 / (1 + M_E ** (8 - 0.01 * $cpm / 10 ** 9)));
+        }
+
+//        for ($i = 0; $i < 100; $i++) {
+//            $t[] = (5 + $i / 2) * 10 ** 11;
+//        }
+//        foreach ($t as $cpm) {
+//            $viewsByCpm = viewsByCpm($cpm);
+//            $cost = $viewsByCpm * $cpm / 1000;
+//        }
+
+        $config = new PaymentCalculatorConfig();
+        $campaigns = new CampaignCollection(
+            self::campaign(
+                ['budget'
