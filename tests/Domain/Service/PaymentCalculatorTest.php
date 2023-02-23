@@ -1201,4 +1201,27 @@ final class PaymentCalculatorTest extends TestCase
         $config = new PaymentCalculatorConfig();
         $campaigns = new CampaignCollection(
             self::campaign(
-                ['budget'
+                ['budget' => 140 * 10 ** 11, 'max_cpm' => null, 'max_cpc' => null,],
+                [self::banner()],
+                [self::conversion()],
+            )
+        );
+        $bidStrategies = new BidStrategyCollection();
+        /** @var CampaignCost $campaignCost */
+        $campaignCost = null;
+        $previousCpm = 0;
+        $views = 0;
+        for ($loop = 0; $loop < 50; $loop++) {
+            $reportId = ($loop + 1) * 3600;
+
+            $repository = $this->createMock(CampaignCostRepository::class);
+            $repository
+                ->expects($this->once())
+                ->method('fetch')
+                ->willReturn($campaignCost);
+            $repository
+                ->expects($this->once())
+                ->method('saveAll')
+                ->willReturnCallback(function ($campaignCostCollection) use (&$campaignCost) {
+                    $this->assertCount(1, $campaignCostCollection);
+                
