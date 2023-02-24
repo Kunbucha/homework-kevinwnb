@@ -1251,4 +1251,28 @@ final class PaymentCalculatorTest extends TestCase
         }
     }
 
-    p
+    private function statusForAll(
+        int $status,
+        array $eventData = [],
+        array $campaignData = [],
+        array $bannerData = [],
+        array $conversionData = []
+    ) {
+        $campaigns = new CampaignCollection(
+            self::campaign($campaignData, [self::banner($bannerData)], [self::conversion($conversionData)])
+        );
+
+        $payment = $this->single($campaigns, self::viewEvent($eventData));
+        $this->assertEquals($status, $payment['status']);
+
+        $payment = $this->single($campaigns, self::clickEvent($eventData));
+        $this->assertEquals($status, $payment['status']);
+
+        $payment = $this->single($campaigns, self::conversionEvent($eventData));
+        $this->assertEquals($status, $payment['status']);
+    }
+
+    private function single(CampaignCollection $campaigns, array $event, array $config = []): array
+    {
+        $reportId = 0;
+        $bidStrateg
