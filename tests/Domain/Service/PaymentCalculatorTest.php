@@ -1224,4 +1224,31 @@ final class PaymentCalculatorTest extends TestCase
                 ->method('saveAll')
                 ->willReturnCallback(function ($campaignCostCollection) use (&$campaignCost) {
                     $this->assertCount(1, $campaignCostCollection);
-                
+                    $campaignCost = $campaignCostCollection[0];
+                    return 1;
+                });
+
+            $cpm = $campaignCost != null
+                ? (int)(1000 * $campaignCost->getViewsCost() / $campaignCost->getViews())
+                : $config->getAutoCpmDefault();
+
+            if ($loop > 0) {
+                echo sprintf(
+                    "%3d\t%6.3f\t%+.3f\t%5d\t%7.3f\n",
+                    $loop,
+                    $cpm / 10 ** 11,
+                    ($cpm - $previousCpm) / 10 ** 11,
+                    $views,
+                    $campaignCost->getViewsCost() / 10 ** 11
+                );
+            }
+            $views = viewsByCpm($cpm);
+            $previousCpm = $cpm;
+
+            $payments = (new PaymentCalculator($campaigns, $bidStrategies, $repository, $config))
+                ->calculate($reportId, self::uniqueViewEvents($views));
+            $this->assertCount($views, $payments);
+        }
+    }
+
+    p
