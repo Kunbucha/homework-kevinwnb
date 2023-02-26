@@ -1275,4 +1275,32 @@ final class PaymentCalculatorTest extends TestCase
     private function single(CampaignCollection $campaigns, array $event, array $config = []): array
     {
         $reportId = 0;
-        $bidStrateg
+        $bidStrategies = new BidStrategyCollection();
+        $payments = (new PaymentCalculator(
+            $campaigns,
+            $bidStrategies,
+            $this->getMockedCampaignCostRepository(),
+            new PaymentCalculatorConfig($config)
+        ))->calculate($reportId, [$event]);
+        $result = [];
+
+        foreach ($payments as $payment) {
+            if (
+                $payment['event_type'] === $event['type']
+                && $payment['event_id'] === $event['id']
+            ) {
+                $result = $payment;
+            }
+        }
+
+        return $result;
+    }
+
+    private function values(CampaignCollection $campaigns, array $events, array $config = []): array
+    {
+        return $this->valuesWithCustomBidStrategy($campaigns, new BidStrategyCollection(), $events, $config);
+    }
+
+    private function valuesWithCustomBidStrategy(
+        CampaignCollection $campaigns,
+        BidStrategyCollection $bidStrategies,
