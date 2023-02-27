@@ -1333,3 +1333,29 @@ final class PaymentCalculatorTest extends TestCase
             [
                 'id' => self::CAMPAIGN_ID,
                 'advertiser_id' => self::ADVERTISER_ID,
+                'medium' => Medium::Web->value,
+                'vendor' => null,
+                'time_start' => self::TIME - 7 * 24 * 3600,
+                'time_end' => null,
+                'filters' => $filters,
+                'budget' => self::CAMPAIGN_BUDGET,
+                'max_cpm' => self::CAMPAIGN_CPV * 1000,
+                'max_cpc' => self::CAMPAIGN_CPC,
+                'bid_strategy_id' => self::BID_STRATEGY_ID,
+                'deleted_at' => null,
+            ],
+            $mergeData
+        );
+
+        $budget = new Budget(
+            $data['budget'],
+            $data['max_cpm'] !== null ? $data['max_cpm'] : null,
+            $data['max_cpc'] !== null ? $data['max_cpc'] : null
+        );
+
+        return new Campaign(
+            new Id($data['id']),
+            new Id($data['advertiser_id']),
+            Medium::tryFrom($data['medium']),
+            $data['vendor'],
+     
