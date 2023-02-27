@@ -1304,3 +1304,32 @@ final class PaymentCalculatorTest extends TestCase
     private function valuesWithCustomBidStrategy(
         CampaignCollection $campaigns,
         BidStrategyCollection $bidStrategies,
+        array $events,
+        array $config = []
+    ): array {
+        $reportId = 0;
+        $payments = (new PaymentCalculator(
+            $campaigns,
+            $bidStrategies,
+            $this->getMockedCampaignCostRepository(),
+            new PaymentCalculatorConfig($config)
+        ))->calculate($reportId, $events);
+        $result = [];
+
+        foreach ($payments as $payment) {
+            if ($payment['status'] === PaymentStatus::ACCEPTED) {
+                $result[$payment['event_id']] = $payment['value'];
+            }
+        }
+
+        return $result;
+    }
+
+    private static function campaign(array $mergeData = [], array $banners = [], array $conversions = []): Campaign
+    {
+        $filters = ['require' => ['r1' => ['r1_v1', 'r1_v2', 'r1_v4']], 'exclude' => ['e1' => ['e1_v1', 'e1_v2']]];
+
+        $data = array_merge(
+            [
+                'id' => self::CAMPAIGN_ID,
+                'advertiser_id' => self::ADVERTISER_ID,
