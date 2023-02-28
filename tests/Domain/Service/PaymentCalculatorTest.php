@@ -1358,4 +1358,30 @@ final class PaymentCalculatorTest extends TestCase
             new Id($data['advertiser_id']),
             Medium::tryFrom($data['medium']),
             $data['vendor'],
-     
+            DateTimeHelper::fromTimestamp($data['time_start']),
+            $data['time_end'] !== null ? DateTimeHelper::fromTimestamp($data['time_end']) : null,
+            $budget,
+            new BannerCollection(...$banners),
+            $data['filters'],
+            new ConversionCollection(...$conversions),
+            new Id($data['bid_strategy_id']),
+            $data['deleted_at'] !== null ? DateTimeHelper::fromTimestamp($data['deleted_at']) : null
+        );
+    }
+
+    private static function banner(array $mergeData = []): Banner
+    {
+        $data = array_merge(
+            [
+                'id' => self::BANNER_ID,
+                'campaign_id' => self::CAMPAIGN_ID,
+                'size' => self::BANNER_SIZE,
+                'type' => BannerType::IMAGE,
+                'deleted_at' => null,
+            ],
+            $mergeData
+        );
+
+        return new Banner(
+            new Id($data['id']),
+       
