@@ -1409,4 +1409,41 @@ final class PaymentCalculatorTest extends TestCase
             new Id($data['campaign_id']),
             new LimitType($data['limit_type']),
             $data['is_repeatable'],
-            $data['deleted_at'] !== null ? DateTimeHelper::fromTimestamp($data['deleted_at']) : nul
+            $data['deleted_at'] !== null ? DateTimeHelper::fromTimestamp($data['deleted_at']) : null
+        );
+    }
+
+    private static function viewEvent(array $mergeData = []): array
+    {
+        return array_merge(
+            self::event(),
+            [
+                'id' => '10000000000000000000000000000001',
+                'type' => EventType::VIEW,
+            ],
+            $mergeData
+        );
+    }
+
+    private static function uniqueViewEvents($count): array
+    {
+        $events = [];
+        for ($i = 0; $i < $count; $i++) {
+            $id = str_pad((string)$i, 31, '0', STR_PAD_LEFT);
+            $events[] = self::viewEvent([
+                'id' => '1' . $id,
+                'user_id' => 'a' . $id,
+            ]);
+        }
+        return $events;
+    }
+
+    private static function clickEvent(array $mergeData = []): array
+    {
+        return array_merge(
+            self::event(),
+            [
+                'id' => '10000000000000000000000000000002',
+                'type' => EventType::CLICK,
+            ],
+            $merg
