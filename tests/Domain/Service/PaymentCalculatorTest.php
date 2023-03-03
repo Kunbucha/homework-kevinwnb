@@ -1446,4 +1446,30 @@ final class PaymentCalculatorTest extends TestCase
                 'id' => '10000000000000000000000000000002',
                 'type' => EventType::CLICK,
             ],
-            $merg
+            $mergeData
+        );
+    }
+
+    private static function conversionEvent(array $mergeData = []): array
+    {
+        return array_merge(
+            self::event(),
+            [
+                'id' => '10000000000000000000000000000003',
+                'type' => EventType::CONVERSION,
+                'payment_status' => null,
+                'group_id' => self::CONVERSION_GROUP_ID,
+                'conversion_id' => self::CONVERSION_ID,
+                'conversion_value' => self::CONVERSION_VALUE,
+            ],
+            $mergeData
+        );
+    }
+
+    private static function event(): array
+    {
+        return [
+            'id' => '10000000000000000000000000000000',
+            'time' => DateTimeHelper::fromTimestamp(self::TIME)->format(DateTimeInterface::ATOM),
+            'case_id' => '20000000000000000000000000000001',
+            'case_time' => DateTimeHelper::fromTimestamp(self::TIME - 100)->for
