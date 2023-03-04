@@ -1472,4 +1472,25 @@ final class PaymentCalculatorTest extends TestCase
             'id' => '10000000000000000000000000000000',
             'time' => DateTimeHelper::fromTimestamp(self::TIME)->format(DateTimeInterface::ATOM),
             'case_id' => '20000000000000000000000000000001',
-            'case_time' => DateTimeHelper::fromTimestamp(self::TIME - 100)->for
+            'case_time' => DateTimeHelper::fromTimestamp(self::TIME - 100)->format(DateTimeInterface::ATOM),
+            'publisher_id' => '30000000000000000000000000000001',
+            'zone_id' => '40000000000000000000000000000001',
+            'advertiser_id' => self::ADVERTISER_ID,
+            'campaign_id' => self::CAMPAIGN_ID,
+            'banner_id' => self::BANNER_ID,
+            'impression_id' => '80000000000000000000000000000001',
+            'tracking_id' => '90000000000000000000000000000001',
+            'user_id' => self::USER_ID,
+            'page_rank' => 1.0,
+            'human_score' => 0.9,
+            'keywords' => ['r1' => ['r1_v1'], 'e1' => ['e1_v3']],
+            'context' => [],
+        ];
+    }
+
+    private function getMockedCampaignCostRepository(): CampaignCostRepository
+    {
+        $repository = $this->createMock(CampaignCostRepository::class);
+        $repository->expects($this->never())->method('fetch');
+
+        return $r
