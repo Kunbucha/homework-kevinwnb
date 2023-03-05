@@ -1493,4 +1493,6 @@ final class PaymentCalculatorTest extends TestCase
         $repository = $this->createMock(CampaignCostRepository::class);
         $repository->expects($this->never())->method('fetch');
 
-        return $r
+        return $repository;
+    }
+}
