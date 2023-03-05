@@ -30,4 +30,9 @@ final class BannerTypeTest extends TestCase
         $this->assertFalse($type->isImage());
     }
 
-    public function testInvalidType(): voi
+    public function testInvalidType(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new BannerType('non-existent-type');
+    }
+}
