@@ -21,4 +21,18 @@ final class IdCollectionTest extends TestCase
             new Id($id1),
             new Id($id2),
             new Id($id3),
-    
+            new Id($id4)
+        );
+
+        $this->assertCount(4, $collection);
+        $this->assertEquals([hex2bin($id1), hex2bin($id2), hex2bin($id3), hex2bin($id4)], $collection->toBinArray());
+    }
+
+    public function testEmptyCollection(): void
+    {
+        $collection = new IdCollection();
+
+        $this->assertCount(0, $collection);
+        $this->assertEmpty($collection);
+    }
+}
