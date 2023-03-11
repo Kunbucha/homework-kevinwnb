@@ -24,4 +24,15 @@ final class LimitTypeTest extends TestCase
     {
         $type = LimitType::createOutOfBudget();
 
-        $thi
+        $this->assertEquals('out_of_budget', $type->toString());
+        $this->assertEquals('out_of_budget', (string)$type);
+        $this->assertTrue($type->isOutOfBudget());
+        $this->assertFalse($type->isInBudget());
+    }
+
+    public function testInvalidType(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new LimitType('non-existent-type');
+    }
+}
