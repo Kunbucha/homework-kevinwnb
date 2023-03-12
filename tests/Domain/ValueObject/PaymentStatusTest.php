@@ -68,4 +68,9 @@ final class PaymentStatusTest extends TestCase
             [PaymentStatus::CAMPAIGN_NOT_FOUND, 'campaign_not_found'],
             [PaymentStatus::CAMPAIGN_OUTDATED, 'campaign_outdated'],
             [PaymentStatus::BANNER_NOT_FOUND, 'banner_not_found'],
-            [PaymentStatus::INVALID_
+            [PaymentStatus::INVALID_TARGETING, 'invalid_targeting'],
+            [PaymentStatus::HUMAN_SCORE_TOO_LOW, 'human_score_too_low'],
+            [PaymentStatus::CONVERSION_NOT_FOUND, 'conversion_not_found'],
+        ];
+    }
+}
