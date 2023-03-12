@@ -41,3 +41,31 @@ final class PaymentStatusTest extends TestCase
         $this->assertFalse($status->isAccepted());
         $this->assertTrue($status->isRejected());
         $this->assertEquals('rejected:unknown', $status->toString());
+    }
+
+    public function testInvalidStatus(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new PaymentStatus(-1);
+    }
+
+    /**
+     * @dataProvider rejectedStatusProvider
+     */
+    public function testRejectedStatus(int $status, string $label): void
+    {
+        $status = new PaymentStatus($status);
+
+        $this->assertTrue($status->isProcessed());
+        $this->assertFalse($status->isAccepted());
+        $this->assertTrue($status->isRejected());
+        $this->assertEquals('rejected:' . $label, $status->toString());
+    }
+
+    public function rejectedStatusProvider(): array
+    {
+        return [
+            [PaymentStatus::CAMPAIGN_NOT_FOUND, 'campaign_not_found'],
+            [PaymentStatus::CAMPAIGN_OUTDATED, 'campaign_outdated'],
+            [PaymentStatus::BANNER_NOT_FOUND, 'banner_not_found'],
+            [PaymentStatus::INVALID_
