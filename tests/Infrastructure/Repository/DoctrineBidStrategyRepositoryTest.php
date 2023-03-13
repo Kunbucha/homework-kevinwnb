@@ -20,4 +20,27 @@ final class DoctrineBidStrategyRepositoryTest extends RepositoryTestCase
 
         $this->assertEmpty($repository->fetchAll());
 
-        $result = $repository->saveAll(new BidStrategyCollection
+        $result = $repository->saveAll(new BidStrategyCollection());
+
+        $this->assertEquals(0, $result);
+        $this->assertEmpty($repository->fetchAll());
+
+        $result = $repository->saveAll(
+            new BidStrategyCollection(
+                new BidStrategy(new Id('f1c567e1396b4cadb52223a51796fd01'), 'user:country:st', 0.99),
+                new BidStrategy(new Id('f1c567e1396b4cadb52223a51796fd02'), 'user:country:us', 0.6)
+            )
+        );
+
+        $this->assertEquals(2, $result);
+        $this->assertCount(2, $repository->fetchAll());
+
+        $result = $repository->saveAll(
+            new BidStrategyCollection(
+                new BidStrategy(new Id('f1c567e1396b4cadb52223a51796fd02'), 'user:country:us', 0.64),
+                new BidStrategy(new Id('f1c567e1396b4cadb52223a51796fd03'), 'user:country:in', 0.4)
+            )
+        );
+
+        $this->assertEquals(2, $result);
+        $this->assertCount(3, $repository->f
