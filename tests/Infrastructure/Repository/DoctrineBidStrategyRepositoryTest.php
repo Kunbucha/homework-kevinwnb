@@ -66,4 +66,34 @@ final class DoctrineBidStrategyRepositoryTest extends RepositoryTestCase
         );
         $this->assertCount(3, $list);
 
-        $this->assertEquals(1, $repository->deleteAll(new IdCollection(new Id('f1c567e1396b4cadb52223a51
+        $this->assertEquals(1, $repository->deleteAll(new IdCollection(new Id('f1c567e1396b4cadb52223a51796fd02'))));
+
+        $list = array_filter(
+            $repository->fetchAll()->toArray(),
+            function (BidStrategy $bidStrategy) {
+                return $bidStrategy->getDeletedAt() === null;
+            }
+        );
+        $this->assertCount(2, $list);
+
+        $this->assertEquals(
+            2,
+            $repository->deleteAll(
+                new IdCollection(new Id('f1c567e1396b4cadb52223a51796fd01'), new Id('f1c567e1396b4cadb52223a51796fd03'))
+            )
+        );
+
+        $list = array_filter(
+            $repository->fetchAll()->toArray(),
+            function (BidStrategy $bidStrategy) {
+                return $bidStrategy->getDeletedAt() === null;
+            }
+        );
+        $this->assertEmpty($list);
+    }
+
+    public function testUpdate(): void
+    {
+        $repository = new DoctrineBidStrategyRepository($this->connection, new NullLogger());
+
+        $repositor
