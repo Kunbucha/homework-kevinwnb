@@ -96,4 +96,28 @@ final class DoctrineBidStrategyRepositoryTest extends RepositoryTestCase
     {
         $repository = new DoctrineBidStrategyRepository($this->connection, new NullLogger());
 
-        $repositor
+        $repository->saveAll(
+            new BidStrategyCollection(
+                new BidStrategy(new Id('f1c567e1396b4cadb52223a51796fd01'), 'user:country:st', 0.99)
+            )
+        );
+
+        $this->assertEquals(0.99, $repository->fetchAll()->first()->getRank());
+
+        $repository->saveAll(
+            new BidStrategyCollection(
+                new BidStrategy(new Id('f1c567e1396b4cadb52223a51796fd01'), 'user:country:st', 0.88)
+            )
+        );
+
+        $this->assertEquals(0.88, $repository->fetchAll()->first()->getRank());
+    }
+
+    public function testOverwrite(): void
+    {
+        $repository = new DoctrineBidStrategyRepository($this->connection, new NullLogger());
+
+        $repository->saveAll(
+            new BidStrategyCollection(
+                new BidStrategy(new Id('f1c567e1396b4cadb52223a51796fd01'), 'user:country:st', 0.99),
+                new BidStrategy(new Id(
