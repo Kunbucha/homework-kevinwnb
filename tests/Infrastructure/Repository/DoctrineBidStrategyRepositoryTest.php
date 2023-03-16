@@ -120,4 +120,33 @@ final class DoctrineBidStrategyRepositoryTest extends RepositoryTestCase
         $repository->saveAll(
             new BidStrategyCollection(
                 new BidStrategy(new Id('f1c567e1396b4cadb52223a51796fd01'), 'user:country:st', 0.99),
-                new BidStrategy(new Id(
+                new BidStrategy(new Id('f1c567e1396b4cadb52223a51796fd01'), 'user:country:us', 0.6)
+            )
+        );
+
+        $this->assertCount(2, $repository->fetchAll());
+
+        $repository->saveAll(
+            new BidStrategyCollection(
+                new BidStrategy(new Id('f1c567e1396b4cadb52223a51796fd01'), 'user:country:st', 0.99)
+            )
+        );
+
+        $this->assertCount(1, $repository->fetchAll());
+    }
+
+    public function testFetchingException(): void
+    {
+        $this->expectException(DomainRepositoryException::class);
+
+        $repository = new DoctrineBidStrategyRepository($this->failedConnection(), new NullLogger());
+        $repository->fetchAll();
+    }
+
+    public function testSavingException(): void
+    {
+        $this->expectException(DomainRepositoryException::class);
+
+        $repository = new DoctrineBidStrategyRepository($this->failedConnection(), new NullLogger());
+        $repository->saveAll(new BidStrategyCollection(
+            new BidStrategy(new Id('f1c567e1396b4cadb52223a51796fd01'), '
