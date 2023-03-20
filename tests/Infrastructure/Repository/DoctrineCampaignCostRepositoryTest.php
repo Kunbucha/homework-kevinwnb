@@ -82,3 +82,18 @@ final class DoctrineCampaignCostRepositoryTest extends RepositoryTestCase
         $this->expectException(DomainRepositoryException::class);
 
         $repository = new DoctrineCampaignCostRepository($this->failedConnection(), new NullLogger());
+        $repository->saveAll(
+            new CampaignCostCollection(
+                new CampaignCost(1641286800, new Id('f1c567e1396b4cadb52223a51796fd02'), 100, 0, 0, 0, 0, 0, 0, 0, 0)
+            )
+        );
+    }
+
+    public function testDeletingException(): void
+    {
+        $this->expectException(DomainRepositoryException::class);
+
+        $repository = new DoctrineCampaignCostRepository($this->failedConnection(), new NullLogger());
+        $repository->deleteByTime(new DateTime());
+    }
+}
