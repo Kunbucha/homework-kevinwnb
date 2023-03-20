@@ -177,3 +177,123 @@ final class DoctrineEventRepositoryTest extends RepositoryTestCase
     public function testDuplicateKey(): void
     {
         $this->expectException(InvalidDataException::class);
+
+        $events = new EventCollection(EventType::createView());
+        $events->add(self::viewEvent(1571838426, 1));
+        $events->add(self::viewEvent(1571838427, 1));
+
+        $repository = new DoctrineEventRepository($this->connection, new NullLogger());
+        $repository->saveAll($events);
+    }
+
+    public function testDeleting(): void
+    {
+        $timestamp = 1571838426;
+
+        $events1 = new EventCollection(EventType::createView());
+        $events1->add(self::viewEvent($timestamp - 100, 1));
+        $events1->add(self::viewEvent($timestamp - 90, 2));
+        $events1->add(self::viewEvent($timestamp - 80, 3));
+        $events1->add(self::viewEvent($timestamp - 60, 4));
+        $events1->add(self::viewEvent($timestamp - 50, 5));
+
+        $repository = new DoctrineEventRepository($this->connection, new NullLogger());
+        $repository->saveAll($events1);
+
+        $this->assertEquals(
+            0,
+            $repository->deleteByTime(EventType::createView(), DateTimeHelper::fromTimestamp($timestamp))
+        );
+        $this->assertCount(5, self::iterableToArray($repository->fetchByTime()));
+        $this->assertEquals(
+            3,
+            $repository->deleteByTime(
+                EventType::createView(),
+                DateTimeHelper::fromTimestamp($timestamp - 90),
+                DateTimeHelper::fromTimestamp($timestamp - 60)
+            )
+        );
+        $this->assertCount(2, self::iterableToArray($repository->fetchByTime()));
+        $this->assertEquals(
+            2,
+            $repository->deleteByTime(EventType::createView(), DateTimeHelper::fromTimestamp($timestamp - 200))
+        );
+        $this->assertEmpty(self::iterableToArray($repository->fetchByTime()));
+    }
+
+    public function testSavingException(): void
+    {
+        $this->expectException(DomainRepositoryException::class);
+
+        $repository = new DoctrineEventRepository($this->failedConnection(), new NullLogger());
+        $repository->saveAll(new EventCollection(EventType::createView()));
+    }
+
+    public function testFetchingException(): void
+    {
+        $this->expectException(DomainRepositoryException::class);
+
+        $repository = new DoctrineEventRepository($this->failedConnection(), new NullLogger());
+        self::iterableToArray($repository->fetchByTime());
+    }
+
+    public function testDeletingException(): void
+    {
+        $this->expectException(DomainRepositoryException::class);
+
+        $repository = new DoctrineEventRepository($this->failedConnection(), new NullLogger());
+        $repository->deleteByTime(EventType::createView(), new DateTime());
+    }
+
+    private static function impressionCase(int $timestamp): ImpressionCase
+    {
+        $impression = new Impression(
+            new Id('73c567e1396b4cadb52223a51796fd01'),
+            new Id('83c567e1396b4cadb52223a51796fd01'),
+            new Id('93c567e1396b4cadb52223a51796fd01'),
+            new Context(0.98, 0.74, ['a' => 'aaa'], ['b' => 'bbb'])
+        );
+
+        return new ImpressionCase(
+            new Id('13c567e1396b4cadb52223a51796fd01'),
+            DateTimeHelper::fromTimestamp($timestamp),
+            new Id('23c567e1396b4cadb52223a51796fd01'),
+            new Id('33c567e1396b4cadb52223a51796fd01'),
+            new Id('43c567e1396b4cadb52223a51796fd01'),
+            new Id('53c567e1396b4cadb52223a51796fd01'),
+            new Id('63c567e1396b4cadb52223a51796fd01'),
+            $impression
+        );
+    }
+
+    private static function viewEvent(int $timestamp, int $id): ViewEvent
+    {
+        return new ViewEvent(
+            new Id('f1c567e1396b4cadb52223a51796fd0' . $id),
+            DateTimeHelper::fromTimestamp($timestamp),
+            self::impressionCase($timestamp)
+        );
+    }
+
+    private static function clickEvent(int $timestamp, int $id): ClickEvent
+    {
+        return new ClickEvent(
+            new Id('f1c567e1396b4cadb52223a51796fd0' . $id),
+            DateTimeHelper::fromTimestamp($timestamp),
+            self::impressionCase($timestamp - 1)
+        );
+    }
+
+    private static function conversionEvent(int $timestamp, int $id): ConversionEvent
+    {
+        return new ConversionEvent(
+            new Id('f1c567e1396b4cadb52223a51796fd0' . $id),
+            DateTimeHelper::fromTimestamp($timestamp),
+            self::impressionCase($timestamp - 10),
+            new Id('f2c567e1396b4cadb52223a51796fd01'),
+            new Id('f3c567e1396b4cadb52223a51796fd01'),
+            100,
+            new PaymentStatus(PaymentStatus::HUMAN_SCORE_TOO_LOW)
+        );
+    }
+}
