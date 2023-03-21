@@ -16,4 +16,28 @@ abstract class RepositoryTestCase extends KernelTestCase
     protected function setUp(): void
     {
         parent::setUp();
-   
+        $this->connection = self::bootKernel()->getContainer()->get('doctrine')->getConnection();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->connection->close();
+    }
+
+    protected function failedConnection(): Connection
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->method('executeQuery')->willThrowException(new DBALException());
+        $connection->method('executeStatement')->willThrowException(new DBALException());
+        $connection->method('fetchAssociative')->willThrowException(new DBALException());
+        $connection->method('fetchOne')->willThrowException(new DBALException());
+        $connection->method('fetchAllAssociative')->willThrowException(new DBALException());
+
+        return $connection;
+    }
+
+    protected static function iterableToArray(iterable $list): array
+    {
+        $result = [];
+        fore
