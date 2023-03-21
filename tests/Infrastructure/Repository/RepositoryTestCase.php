@@ -40,4 +40,10 @@ abstract class RepositoryTestCase extends KernelTestCase
     protected static function iterableToArray(iterable $list): array
     {
         $result = [];
-        fore
+        foreach ($list as $item) {
+            $result[] = $item;
+        }
+
+        return $result;
+    }
+}
