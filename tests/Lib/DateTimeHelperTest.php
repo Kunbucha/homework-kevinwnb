@@ -29,4 +29,9 @@ final class DateTimeHelperTest extends TestCase
         $this->assertEquals('2019-01-01T12:00:00+00:00', $date->format(DateTimeInterface::ATOM));
     }
 
-    public function test
+    public function testInvalidString(): void
+    {
+        $this->expectException(DateTimeException::class);
+        DateTimeHelper::fromString('2019-50-50');
+    }
+}
