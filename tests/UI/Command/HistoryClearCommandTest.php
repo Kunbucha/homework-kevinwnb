@@ -49,4 +49,29 @@ final class HistoryClearCommandTest extends CommandTestCase
             ['--period' => 'P1D'],
             0,
             'Clearing payments and events older than ' . self::periodToDate(24 * 3600)
-        )
+        );
+    }
+
+    public function testInvalidPeriod(): void
+    {
+        $this->executeCommand(['--period' => 0], 1, 'Unknown or bad format');
+        $this->executeCommand(['--period' => 1000], 1, 'Unknown or bad format');
+        $this->executeCommand(['--period' => 'invalid_period'], 1, 'Unknown or bad format');
+    }
+
+    public function testBeforeDate(): void
+    {
+        $this->executeCommand(
+            ['--before' => '2019-10-25 11:15:09'],
+            0,
+            'Clearing payments and events older than 2019-10-25T11:15:09+00:00'
+        );
+        $this->executeCommand(
+            ['--before' => '2019-10-25 11:00:00'],
+            0,
+            'Clearing payments and events older than 2019-10-25T11:00:00+00:00'
+        );
+        $this->executeCommand(
+            ['--before' => '2019-01-01'],
+            0,
+            'Clearing payments and events older than 2019-01-01T00:00:00+00:0
