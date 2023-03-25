@@ -74,4 +74,32 @@ final class HistoryClearCommandTest extends CommandTestCase
         $this->executeCommand(
             ['--before' => '2019-01-01'],
             0,
-            'Clearing payments and events older than 2019-01-01T00:00:00+00:0
+            'Clearing payments and events older than 2019-01-01T00:00:00+00:00'
+        );
+    }
+
+    public function testInvalidBeforeDate(): void
+    {
+        $this->executeCommand(['--before' => 100], 1, 'Failed to parse time string');
+        $this->executeCommand(['--before' => 'invalid_date'], 1, 'Failed to parse time string');
+    }
+
+    public function testLock(): void
+    {
+        $store = SemaphoreStore::isSupported() ? new SemaphoreStore() : new FlockStore();
+        $lock = (new LockFactory($store))->createLock(self::$command);
+        self::assertTrue($lock->acquire());
+
+        $this->executeCommand([], 1, 'The command is already running in another process.');
+
+        $lock->release();
+    }
+
+    private static function periodToDate(int $period): string
+    {
+        return date('c', (int)floor((time() - $period) / 3600) * 3600);
+    }
+
+    private function setUpReports(int $limit): void
+    {
+        $connection = self::bo
