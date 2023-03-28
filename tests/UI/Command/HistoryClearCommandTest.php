@@ -102,4 +102,22 @@ final class HistoryClearCommandTest extends CommandTestCase
 
     private function setUpReports(int $limit): void
     {
-        $connection = self::bo
+        $connection = self::bootKernel()->getContainer()->get('doctrine')->getConnection();
+        $repository = new DoctrinePaymentReportRepository($connection, new NullLogger());
+        for ($i = 0; $i < $limit; ++$i) {
+            $id = (int)(floor(time() / 3600) * 3600) - (50 + $i) * 3600;
+            $repository->save(new PaymentReport($id, PaymentReportStatus::createComplete()));
+        }
+    }
+
+    private function setUpEvents(int $limit): void
+    {
+        $connection = self::bootKernel()->getContainer()->get('doctrine')->getConnection();
+        $repository = new DoctrineEventRepository($connection, new NullLogger());
+        $collection = new EventCollection(EventType::createView(), null, null);
+        for ($i = 0; $i < $limit; ++$i) {
+            $collection->add(
+                new ViewEvent(
+                    new Id('aaa567e1396b4cadb52223a51796fd0' . $i),
+                    new DateTime('-50 hours'),
+                    new Impr
