@@ -120,4 +120,24 @@ final class HistoryClearCommandTest extends CommandTestCase
                 new ViewEvent(
                     new Id('aaa567e1396b4cadb52223a51796fd0' . $i),
                     new DateTime('-50 hours'),
-                    new Impr
+                    new ImpressionCase(
+                        new Id('fff567e1396b4cadb52223a51796fd01'),
+                        new DateTime('-51 hours'),
+                        new Id('fff567e1396b4cadb52223a51796fd02'),
+                        new Id('fff567e1396b4cadb52223a51796fd03'),
+                        new Id('fff567e1396b4cadb52223a51796fd04'),
+                        new Id('fff567e1396b4cadb52223a51796fd05'),
+                        new Id('fff567e1396b4cadb52223a51796fd06'),
+                        new Impression(
+                            new Id('fff567e1396b4cadb52223a51796fd07'),
+                            new Id('fff567e1396b4cadb52223a51796fd08'),
+                            new Id('fff567e1396b4cadb52223a51796fd09'),
+                            new Context(1, 1)
+                        )
+                    )
+                )
+            );
+        }
+        $repository->saveAll($collection);
+    }
+}
