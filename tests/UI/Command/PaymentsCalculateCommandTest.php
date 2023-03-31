@@ -30,4 +30,39 @@ final class PaymentsCalculateCommandTest extends CommandTestCase
     public function testExecuteWithTimestamp(): void
     {
         $this->executeCommand(
-            ['date
+            ['date' => '1571844764'],
+            0,
+            'Calculating report #1571842800',
+            'Report #1571842800 is not complete yet'
+        );
+    }
+
+    public function testExecuteWithDate(): void
+    {
+        $this->executeCommand(
+            ['date' => '2019-09-23 11:13:45'],
+            0,
+            'Calculating report #1569236400',
+            'Report #1569236400 is not complete yet'
+        );
+    }
+
+    public function testForceExecute(): void
+    {
+        $this->executeCommand(
+            ['date' => '1571244764', '--force' => true],
+            0,
+            'Calculating report #1571241600',
+            '0 payments calculated'
+        );
+    }
+
+    public function testInvalidDate(): void
+    {
+        $this->executeCommand(['date' => 'invalid_date'], 1, 'Failed to parse time string');
+    }
+
+    public function testLock(): void
+    {
+        $store = SemaphoreStore::isSupported() ? new SemaphoreStore() : new FlockStore();
+        $lock = (new LockFacto
