@@ -37,4 +37,34 @@ final class BidStrategyControllerTest extends WebTestCase
         $this->assertEquals(422, $client->getResponse()->getStatusCode());
 
         $client->request('POST', '/api/v1/bid-strategies', [], [], [], json_encode([]));
-        $this->assertEquals(422, $client->getResponse()->getStatusCo
+        $this->assertEquals(422, $client->getResponse()->getStatusCode());
+    }
+
+    public function testInvalidUpdateBidStrategy(): void
+    {
+        $client = self::createClient();
+        $client->request('POST', '/api/v1/bid-strategies', [], [], [], 'invalid[]');
+        $this->assertEquals(422, $client->getResponse()->getStatusCode());
+
+        $parameters = [
+            'bid_strategies' => [
+                [
+                    'id' => 'invalid',
+                ],
+            ],
+        ];
+
+        $client->request('POST', '/api/v1/bid-strategies', [], [], [], json_encode($parameters));
+        $this->assertEquals(422, $client->getResponse()->getStatusCode());
+    }
+
+    public function testDeleteBidStrategy(): void
+    {
+        $parameters = [
+            'bid_strategies' => [
+                '43c567e1396b4cadb52223a51796fd01',
+                'fff567e1396b4cadb52223a51796fd02',
+            ],
+        ];
+
+        $client = self::createClient();
