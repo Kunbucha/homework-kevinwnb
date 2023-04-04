@@ -68,3 +68,27 @@ final class BidStrategyControllerTest extends WebTestCase
         ];
 
         $client = self::createClient();
+        $client->request('DELETE', '/api/v1/bid-strategies', [], [], [], json_encode($parameters));
+        $this->assertEquals(204, $client->getResponse()->getStatusCode());
+    }
+
+    public function testEmptyDeleteBidStrategy(): void
+    {
+        $client = self::createClient();
+        $client->request('DELETE', '/api/v1/bid-strategies');
+        $this->assertEquals(422, $client->getResponse()->getStatusCode());
+
+        $client->request('DELETE', '/api/v1/bid-strategies', [], [], [], json_encode([]));
+        $this->assertEquals(422, $client->getResponse()->getStatusCode());
+    }
+
+    public function testInvalidDeleteBidStrategy(): void
+    {
+        $client = self::createClient();
+        $client->request('DELETE', '/api/v1/bid-strategies', [], [], [], 'invalid[]');
+        $this->assertEquals(422, $client->getResponse()->getStatusCode());
+
+        $parameters = [
+            'bid_strategies' => [
+                'invalid',
+ 
