@@ -91,4 +91,10 @@ final class BidStrategyControllerTest extends WebTestCase
         $parameters = [
             'bid_strategies' => [
                 'invalid',
- 
+            ],
+        ];
+
+        $client->request('DELETE', '/api/v1/bid-strategies', [], [], [], json_encode($parameters));
+        $this->assertEquals(422, $client->getResponse()->getStatusCode());
+    }
+}
